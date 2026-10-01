@@ -1,0 +1,1 @@
+{ "note": "De mock-judge evalueert de regel op photo.facts (holds(rule, facts)); live krijgt het vision-model foto en regeltekst." }

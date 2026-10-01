@@ -285,5 +285,336 @@
         }
       }
     ]
+  },
+  "geheimeRegel": {
+    "features": [
+      "handsUp",
+      "sitting",
+      "oneLeg",
+      "holdingHands",
+      "circle",
+      "eyesClosed",
+      "backToCamera",
+      "crouching"
+    ],
+    "rules": [
+      {
+        "id": "gr1",
+        "tier": 1,
+        "text": {
+          "nl": "iemand heeft een hand boven het hoofd",
+          "en": "someone has a hand above their head"
+        },
+        "aliases": {
+          "nl": [
+            "een hand omhoog",
+            "handen in de lucht"
+          ],
+          "en": [
+            "a hand raised",
+            "hands in the air"
+          ]
+        },
+        "requires": [
+          "handsUp"
+        ],
+        "forbids": []
+      },
+      {
+        "id": "gr2",
+        "tier": 1,
+        "text": {
+          "nl": "spelers houden elkaars hand vast",
+          "en": "players hold each other's hands"
+        },
+        "aliases": {
+          "nl": [
+            "hand in hand",
+            "handen vasthouden"
+          ],
+          "en": [
+            "holding hands",
+            "hand in hand"
+          ]
+        },
+        "requires": [
+          "holdingHands"
+        ],
+        "forbids": []
+      },
+      {
+        "id": "gr3",
+        "tier": 1,
+        "text": {
+          "nl": "iemand zit op de grond of een stoel",
+          "en": "someone is sitting on the floor or a chair"
+        },
+        "aliases": {
+          "nl": [
+            "iemand zit",
+            "zittend"
+          ],
+          "en": [
+            "someone sits",
+            "seated"
+          ]
+        },
+        "requires": [
+          "sitting"
+        ],
+        "forbids": []
+      },
+      {
+        "id": "gr4",
+        "tier": 1,
+        "text": {
+          "nl": "het team staat in een kring",
+          "en": "the team stands in a circle"
+        },
+        "aliases": {
+          "nl": [
+            "een cirkel",
+            "in een kring"
+          ],
+          "en": [
+            "a ring",
+            "in a circle"
+          ]
+        },
+        "requires": [
+          "circle"
+        ],
+        "forbids": []
+      },
+      {
+        "id": "gr5",
+        "tier": 2,
+        "text": {
+          "nl": "handen omhoog maar niemand zit",
+          "en": "hands up but nobody sits"
+        },
+        "aliases": {
+          "nl": [
+            "handen omhoog en niemand zit",
+            "staan met handen in de lucht"
+          ],
+          "en": [
+            "hands raised and everyone stands"
+          ]
+        },
+        "requires": [
+          "handsUp"
+        ],
+        "forbids": [
+          "sitting"
+        ]
+      },
+      {
+        "id": "gr6",
+        "tier": 2,
+        "text": {
+          "nl": "iemand staat op één been en spelers houden elkaar vast",
+          "en": "someone stands on one leg and players hold hands"
+        },
+        "aliases": {
+          "nl": [
+            "een been en hand in hand",
+            "op een been, handen vast"
+          ],
+          "en": [
+            "one leg and holding hands"
+          ]
+        },
+        "requires": [
+          "oneLeg",
+          "holdingHands"
+        ],
+        "forbids": []
+      },
+      {
+        "id": "gr7",
+        "tier": 2,
+        "text": {
+          "nl": "een kring met open ogen",
+          "en": "a circle with open eyes"
+        },
+        "aliases": {
+          "nl": [
+            "kring en ogen open",
+            "cirkel waarbij niemand de ogen sluit"
+          ],
+          "en": [
+            "circle and eyes open",
+            "ring where nobody closes their eyes"
+          ]
+        },
+        "requires": [
+          "circle"
+        ],
+        "forbids": [
+          "eyesClosed"
+        ]
+      },
+      {
+        "id": "gr8",
+        "tier": 2,
+        "text": {
+          "nl": "iemand hurkt met de rug naar de camera",
+          "en": "someone crouches with their back to the camera"
+        },
+        "aliases": {
+          "nl": [
+            "gehurkt met de rug naar ons toe",
+            "rug naar de camera en door de knieën"
+          ],
+          "en": [
+            "crouching facing away",
+            "back to the camera and crouched"
+          ]
+        },
+        "requires": [
+          "crouching",
+          "backToCamera"
+        ],
+        "forbids": []
+      },
+      {
+        "id": "gr9",
+        "tier": 3,
+        "text": {
+          "nl": "iemand zit en iemand heeft een hand omhoog, maar geen kring",
+          "en": "someone sits and someone has a hand up, but no circle"
+        },
+        "aliases": {
+          "nl": [
+            "zitten en hand omhoog zonder kring",
+            "zittend met een hand in de lucht, geen cirkel"
+          ],
+          "en": [
+            "sitting and a raised hand, no ring"
+          ]
+        },
+        "requires": [
+          "sitting",
+          "handsUp"
+        ],
+        "forbids": [
+          "circle"
+        ]
+      },
+      {
+        "id": "gr10",
+        "tier": 3,
+        "text": {
+          "nl": "iemand staat op één been zonder handen vast te houden of ogen dicht",
+          "en": "someone stands on one leg without holding hands or closing eyes"
+        },
+        "aliases": {
+          "nl": [
+            "een been, geen hand in hand, ogen open"
+          ],
+          "en": [
+            "one leg, no hand holding, eyes open"
+          ]
+        },
+        "requires": [
+          "oneLeg"
+        ],
+        "forbids": [
+          "holdingHands",
+          "eyesClosed"
+        ]
+      },
+      {
+        "id": "gr11",
+        "tier": 3,
+        "text": {
+          "nl": "rug naar de camera en hand in hand, niemand zit",
+          "en": "backs to the camera and hand in hand, nobody sits"
+        },
+        "aliases": {
+          "nl": [
+            "hand in hand met de rug naar de camera, staand"
+          ],
+          "en": [
+            "hand in hand facing away, standing"
+          ]
+        },
+        "requires": [
+          "backToCamera",
+          "holdingHands"
+        ],
+        "forbids": [
+          "sitting"
+        ]
+      },
+      {
+        "id": "gr12",
+        "tier": 3,
+        "text": {
+          "nl": "een kring waarin iemand hurkt maar niemand op één been staat",
+          "en": "a circle where someone crouches and nobody stands on one leg"
+        },
+        "aliases": {
+          "nl": [
+            "kring met iemand gehurkt, geen been omhoog"
+          ],
+          "en": [
+            "circle with a crouch, no one-legged stance"
+          ]
+        },
+        "requires": [
+          "circle",
+          "crouching"
+        ],
+        "forbids": [
+          "oneLeg"
+        ]
+      },
+      {
+        "id": "grf1",
+        "tier": "finale",
+        "text": {
+          "nl": "iedereen heeft de handen omhoog terwijl ze hand in hand staan",
+          "en": "everyone has hands up while holding hands"
+        },
+        "aliases": {
+          "nl": [
+            "hand in hand en handen omhoog"
+          ],
+          "en": [
+            "holding hands with arms raised"
+          ]
+        },
+        "requires": [
+          "handsUp",
+          "holdingHands"
+        ],
+        "forbids": []
+      },
+      {
+        "id": "grf2",
+        "tier": "finale",
+        "text": {
+          "nl": "een kring met iemand die hurkt en niemand met gesloten ogen",
+          "en": "a circle with someone crouching and nobody with closed eyes"
+        },
+        "aliases": {
+          "nl": [
+            "kring met een hurker en ogen open"
+          ],
+          "en": [
+            "circle with a crouch and eyes open"
+          ]
+        },
+        "requires": [
+          "circle",
+          "crouching"
+        ],
+        "forbids": [
+          "eyesClosed"
+        ]
+      }
+    ]
   }
 }
