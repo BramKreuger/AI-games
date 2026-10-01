@@ -21,7 +21,7 @@
       "step": "gebouwd en getest, wacht op speltest Bram",
       "concepts_done": true,
       "chosen": "Portretgalerij (bijgesteld met Bram)",
-      "pr": null,
+      "pr": 4,
       "notes": "handmatige run met Bram; engine 1.2 met beeldstap en OpenAI-provider"
     }
   ],
