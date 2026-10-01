@@ -6,6 +6,8 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test test/*.test.js",
-    "sim": "node engine/sim.js demo"
+    "sim": "node engine/sim.js",
+    "test:browser": "node --test --test-timeout=120000 browser-test/browser.test.js",
+    "serve": "node engine/server.js"
   }
 }

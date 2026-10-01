@@ -1,0 +1,49 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Telefoon</title>
+<style>
+:root{--bg:#fff;--fg:#111;--ac:#0a6cff;--mu:#555}@media(prefers-color-scheme:dark){:root{--bg:#111;--fg:#f3f3f3;--mu:#aaa}}
+body{margin:0;font:18px system-ui,sans-serif;background:var(--bg);color:var(--fg)}main{padding:16px;max-width:520px;margin:auto}
+input,select,button,textarea{font:inherit;padding:12px;margin:6px 0;width:100%;box-sizing:border-box;border-radius:8px;border:1px solid #888}button{background:var(--ac);color:#fff;border:0}
+label{display:flex;gap:8px;align-items:center}label input{width:auto}.sec{background:#ffe9a8;color:#222;padding:10px;border-radius:8px;margin:8px 0}.mu{color:var(--mu)}
+video{width:100%;border-radius:8px;background:#000}.pts button{width:30%;margin:2px}
+</style></head><body><main id="app"></main>
+<script src="/web/common.js"></script>
+<script>
+(async () => {
+  const app = document.getElementById('app');
+  const lang = new URLSearchParams(location.search).get('lang');
+  const get = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+  let S = get('pid') ? { playerId: get('pid') } : null, ui, last = '', stream = null;
+  const ensureUI = async (l) => { const all = await (await fetch('/web/ui.json')).json(); ui = all[l] ?? all.nl; document.documentElement.lang = l; };
+  await ensureUI(lang ?? 'nl');
+  const render = (html, key) => { if (key !== last) { app.innerHTML = html; last = key; } };
+  const joinForm = () => render(`<h1>AI-games</h1><input id="n" placeholder="${ui.name}" autocomplete="nickname"><input id="t" placeholder="${ui.team}"><label><input id="o" type="checkbox">${ui.optout}</label><button id="j">${ui.join}</button>`, 'join');
+  async function join(){ const name = document.getElementById('n').value; const r = await post('/api/join', { name, teamId: document.getElementById('t').value || undefined, optOut: document.getElementById('o').checked, playerId: S?.playerId }); if (r.playerId) { S = r; try { localStorage.setItem('pid', r.playerId); localStorage.setItem('nm', name); } catch {} } }
+  document.addEventListener('click', (e) => { if (e.target.id === 'j') join(); });
+  async function tick() {
+    try {
+      if (!S?.playerId) return joinForm();
+      const v = await api(`/api/state?player=${S.playerId}`);
+      if (!v.me) { // server herstart / onbekende speler: stil opnieuw aanmelden met bewaarde naam
+        const nm = get('nm'); if (nm) { const r = await post('/api/join', { name: nm }); S = r; try { localStorage.setItem('pid', r.playerId); } catch {} return; }
+        S = null; return joinForm();
+      }
+      if (v.lang !== (document.documentElement.lang)) await ensureUI(v.lang);
+      const sec = v.private ? `<div class="sec"><b>${ui.secret}</b><br>${esc(v.private)}</div>` : '';
+      const head = `<p class="mu">${esc(v.me.name)} · ${esc(v.me.teamId)}</p>`;
+      if (v.state === 'done') return render(`${head}<h2>${ui.done}</h2>${(v.totals).map((t) => `<p>${esc(t.teamId)}: ${t.points} ${ui.points}</p>`).join('')}`, 'done' + JSON.stringify(v.totals));
+      if (!v.prompt) return render(`${head}${sec}<p>${v.state === 'lobby' ? ui.lobby : ui.wait}</p>`, 'wait' + v.state + (v.private ?? ''));
+      const p = v.prompt, key = 'p' + p.id;
+      if (p.kind === 'photo') {
+        if (last !== key) { render(`${head}${sec}<h2>${ui.photo}</h2><video id="v" playsinline autoplay muted></video><button id="snap">${ui.snap}</button>`, key); try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); document.getElementById('v').srcObject = stream; } catch { /* geen camera: knop stuurt zonder beeld */ } }
+        document.getElementById('snap').onclick = async () => { let data = ''; const vd = document.getElementById('v'); if (stream && vd.videoWidth) { const c = document.createElement('canvas'); c.width = 320; c.height = 240; c.getContext('2d').drawImage(vd, 0, 0, 320, 240); data = c.toDataURL('image/jpeg', 0.6); } stream?.getTracks().forEach((t) => t.stop()); await post('/api/input', { playerId: S.playerId, inputId: p.id, value: { data, flags: [] } }); };
+        return;
+      }
+      if (['vote', 'blame'].includes(p.kind)) return render(`${head}${sec}<h2>${ui[p.kind]}</h2><div class="pts">${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => `<button data-i="${i}">${i}</button>`).join('')}</div>`, key), document.querySelectorAll('.pts button').forEach((b) => { b.onclick = () => post('/api/input', { playerId: S.playerId, inputId: p.id, value: Number(b.dataset.i) - (p.kind === 'vote' ? 1 : 0) }); });
+      render(`${head}${sec}<h2>${ui[p.kind] ?? ui.guess}</h2><textarea id="x" rows="2"></textarea><button id="s">${ui.send}</button>`, key);
+      document.getElementById('s').onclick = () => post('/api/input', { playerId: S.playerId, inputId: p.id, value: document.getElementById('x').value });
+      if (p.kind === 'whisper' && (window.SpeechRecognition || window.webkitSpeechRecognition)) { try { const R = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); R.lang = v.lang === 'en' ? 'en-US' : 'nl-NL'; R.onresult = (e) => { document.getElementById('x').value = e.results[0][0].transcript; }; R.start(); } catch {} }
+    } catch { app.insertAdjacentHTML('afterbegin', ''); document.title = ui.reconnecting; }
+  }
+  setInterval(tick, 800); tick();
+})();
+</script></body></html>
