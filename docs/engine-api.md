@@ -43,3 +43,4 @@ Virtuele klok in testmodus. De sessie plant blokken binnen `durationMin` op prio
 - `engine/embed.js` — `embed`, `cosine`, `similarity`, `distance`, `tokens`: deterministische embeddings voor testmodus en terugval.
 - `engine/sim-generic.js` — `simulate(slug, opts)` voor elk spel; `npm run sim [slug]`.
 - `engine/server.js` — livelaag (`/phone`, `/screen`, `/dashboard`, JSON-API) zonder dependencies; `npm run serve`.
+- `engine/providers/openai.js` — `createOpenAIProvider({ apiKey, budgetUsd, model })` voor `mode: 'live'`: stappen `blueprint`, `judge` (plan), `describe`; budgetbewaking, kosten en latency via `provider.summary()`. Fouten en budgetoverschrijding leiden tot terugval. Rooktest: `npm run smoke`.
