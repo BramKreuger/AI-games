@@ -13,7 +13,7 @@ export { makeTeams, rng } from './bots.js';
 export { embed, cosine, similarity, distance, tokens } from './embed.js';
 
 export function createSession({ game, pack = {}, teams, mode = 'test', lang = 'nl', settings = {}, durationMin = 40,
-  defaults = {}, provider = null, inputs = null, chaos = {}, seed = 1, id = 'session', restore = null }) {
+  defaults = {}, provider = null, inputs = null, chaos = {}, seed = 1, id = 'session', restore = null, wait = null }) {
   if (!satisfies(ENGINE_VERSION, game.engineVersion)) throw new Error(`${game.id} vraagt engine ${game.engineVersion}, huidig ${ENGINE_VERSION}`);
   const L = game.limits;
   const players = teams.reduce((s, t) => s + t.players.length, 0);
@@ -55,8 +55,11 @@ export function createSession({ game, pack = {}, teams, mode = 'test', lang = 'n
       return v ?? null;
     },
     // Privébericht aan een team of speler (bijv. het geheime begrip voor de regisseur). Nooit naar het grote scherm.
-    tell({ teamId, playerId = null, text }) { events.push({ at: clock.now(), type: 'private', teamId, playerId, text }); },
+    // Engine 1.2: `big` toont het bericht groot (bijv. een naambadge om omhoog te houden).
+    tell({ teamId, playerId = null, text, big = false }) { events.push({ at: clock.now(), type: 'private', teamId, playerId, text, ...(big ? { big } : {}) }); },
     log: (e) => events.push({ at: clock.now(), ...e }),
+    // Engine 1.2: echte pauze in de livelaag (bijv. onthulling laten staan); in testmodus direct door.
+    pause: (sec) => (wait ? wait(sec) : Promise.resolve()),
     activeTeams: () => teams.filter((t) => t.active),
   };
 

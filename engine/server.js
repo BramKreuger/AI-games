@@ -41,21 +41,21 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
     sync(); const iv = setInterval(sync, 1000);
     let stopped = false;   // na reset: invoer geeft direct null, de oude sessie loopt snel leeg
     const provider = mode === 'live' ? createOpenAIProvider() : null;
-    const session = createSession({ game, pack, teams, durationMin, lang, defaults, settings, mode: provider ? 'live' : 'test', provider, inputs: (r) => (stopped ? Promise.resolve(null) : botReply(r, players) ?? inputs(r)), id: `live-${Date.now()}` });
+    const session = createSession({ game, pack, teams, durationMin, lang, defaults, settings, mode: provider ? 'live' : 'test', provider, wait: (sec) => new Promise((ok) => setTimeout(ok, sec * 1000 * timeoutScale * (stopped ? 0 : 1))), inputs: (r) => (stopped ? Promise.resolve(null) : botReply(r, players) ?? inputs(r)), id: `live-${Date.now()}` });
     const mine = run = { slug, lang, session, state: 'running', result: null, cursor: 0, stop: () => { stopped = true; } };
     session.run().then((r) => { mine.result = r; if (mine.state === 'running') mine.state = 'done'; }).catch((e) => { mine.state = 'error'; mine.error = e.message; }).finally(() => clearInterval(iv));
     return { teams: teams.length };
   }
 
   // Botspelers antwoorden zelf (dashboard-optie voor een test met minder mensen).
-  function botReply({ teamId, playerId, kind }) {
+  function botReply({ teamId, playerId, kind, data }) {
     const who = playerId ? players.get(playerId) : [...players.values()].find((p) => p.teamId === teamId && !p.bot) ?? null;
     if (who && !who.bot) return null;
     if (!who && ![...players.values()].some((p) => p.teamId === teamId && p.bot)) return null;
     const words = ['boom', 'zon', 'wind', 'rollercoaster', 'file'];
     if (kind === 'photo') return Promise.resolve({ id: 'bot', people: 3, flags: [] });
     if (kind === 'vote' || kind === 'blame') return Promise.resolve(1);
-    if (kind === 'match') return Promise.resolve({});
+    if (kind === 'match') return Promise.resolve(Object.fromEntries((data?.items ?? []).map((it) => [it.no, data.options[Math.floor(Math.random() * data.options.length)]?.id])));
     if (kind === 'prompt') return Promise.resolve('een vrolijk dier dat graag buiten is');
     return Promise.resolve(words[Math.floor(Math.random() * words.length)]);
   }
@@ -79,7 +79,7 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
       state: run?.state ?? 'lobby', lang: run?.lang ?? 'nl', slug: run?.slug ?? null,
       me: p ? { id: p.id, name: p.name, teamId: p.teamId } : null,
       prompt: pend ? { id: pend.id, kind: pend.kind, timeoutSec: pend.timeoutSec, data: pend.data ?? null } : null,
-      private: priv?.text ?? null,
+      private: priv?.text ?? null, privateBig: !!priv?.big,
       screen: screenEvents().slice(-40),
       totals: s ? s.ledger.totals((s.ctx.teams ?? []).map((t) => t.id)) : [],
       teams: teamList(), playersCount: players.size,

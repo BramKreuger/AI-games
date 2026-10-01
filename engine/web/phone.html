@@ -5,6 +5,8 @@ body{margin:0;font:18px system-ui,sans-serif;background:var(--bg);color:var(--fg
 input,select,button,textarea{font:inherit;padding:12px;margin:6px 0;width:100%;box-sizing:border-box;border-radius:8px;border:1px solid #888}button{background:var(--ac);color:#fff;border:0}
 label{display:flex;gap:8px;align-items:center}label input{width:auto}.sec{background:#ffe9a8;color:#222;padding:10px;border-radius:8px;margin:8px 0}.mu{color:var(--mu)}
 video{width:100%;border-radius:8px;background:#000}.pts button{width:30%;margin:2px}
+.big{font-size:30px;font-weight:700;padding:24px 16px;text-align:center;background:var(--ac);color:#fff;border-radius:12px;margin:8px 0}
+.mi{display:grid;grid-template-columns:96px 1fr;gap:8px;align-items:center;margin:8px 0}.mi img{width:96px;height:96px;border-radius:8px;object-fit:cover}.mi select{margin:0}
 </style></head><body><main id="app"></main>
 <script src="/web/common.js"></script>
 <script>
@@ -28,7 +30,7 @@ video{width:100%;border-radius:8px;background:#000}.pts button{width:30%;margin:
         S = null; return joinForm();
       }
       if (v.lang !== (document.documentElement.lang)) await ensureUI(v.lang);
-      const sec = v.private ? `<div class="sec"><b>${ui.secret}</b><br>${esc(v.private)}</div>` : '';
+      const sec = v.private ? (v.privateBig ? `<div class="big">${esc(v.private)}</div>` : `<div class="sec"><b>${ui.secret}</b><br>${esc(v.private)}</div>`) : '';
       const head = `<p class="mu">${esc(v.me.name)} · ${esc(v.me.teamId)}</p>`;
       if (v.state === 'done') return render(`${head}<h2>${ui.done}</h2>${(v.totals).map((t) => `<p>${esc(t.teamId)}: ${t.points} ${ui.points}</p>`).join('')}`, 'done' + JSON.stringify(v.totals));
       if (!v.prompt) return render(`${head}${sec}<p>${v.state === 'lobby' ? ui.lobby : ui.wait}</p>`, 'wait' + v.state + (v.private ?? ''));
@@ -39,7 +41,18 @@ video{width:100%;border-radius:8px;background:#000}.pts button{width:30%;margin:
         return;
       }
       if (['vote', 'blame'].includes(p.kind)) return render(`${head}${sec}<h2>${ui[p.kind]}</h2><div class="pts">${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => `<button data-i="${i}">${i}</button>`).join('')}</div>`, key), document.querySelectorAll('.pts button').forEach((b) => { b.onclick = () => post('/api/input', { playerId: S.playerId, inputId: p.id, value: Number(b.dataset.i) - (p.kind === 'vote' ? 1 : 0) }); });
-      render(`${head}${sec}<h2>${ui[p.kind] ?? ui.guess}</h2><textarea id="x" rows="2"></textarea><button id="s">${ui.send}</button>`, key);
+      if (p.kind === 'ready') { render(`${head}${sec}<h2>${ui.ready}</h2><button id="rd">${ui.send}</button>`, key); document.getElementById('rd').onclick = () => post('/api/input', { playerId: S.playerId, inputId: p.id, value: true }); return; }
+      // Koppelen: elk plaatje een naam uit de lijst (engine 1.2: keuzelijst in p.data).
+      if (p.kind === 'match' && p.data) {
+        render(`${head}${sec}<h2>${ui.match}</h2>${p.data.items.map((it) => `<div class="mi"><img src="/asset/${esc(it.asset)}" alt="${esc(it.label)}"><label>${esc(it.no)} · ${esc(it.label)}<select class="m" data-no="${esc(it.no)}"><option value="">${ui.pick}</option>${p.data.options.map((o) => `<option value="${esc(o.id)}">${esc(o.name)}</option>`).join('')}</select></label></div>`).join('')}<button id="mm">${ui.send}</button>`, key);
+        document.getElementById('mm').onclick = () => { const val = {}; document.querySelectorAll('select.m').forEach((x) => { if (x.value) val[x.dataset.no] = x.value; }); post('/api/input', { playerId: S.playerId, inputId: p.id, value: val }); };
+        return;
+      }
+      const title = p.kind === 'prompt' && p.data ? `${ui.prompt}<br><small>${esc(ui.promptFor.replace('{partner}', p.data.partner).replace('{theme}', p.data.theme))}</small>` : (ui[p.kind] ?? ui.guess);
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      render(`${head}${sec}<h2>${title}</h2><textarea id="x" rows="${p.kind === 'prompt' ? 4 : 2}"></textarea>${p.kind === 'prompt' && SR ? `<button id="mic" type="button">${ui.mic}</button>` : ''}<button id="s">${ui.send}</button>`, key);
+      const mic = document.getElementById('mic');
+      if (mic) mic.onclick = () => { try { const R = new SR(); R.lang = v.lang === 'en' ? 'en-US' : 'nl-NL'; R.onresult = (e) => { const x = document.getElementById('x'); x.value = `${x.value} ${e.results[0][0].transcript}`.trim(); }; R.start(); } catch {} };
       document.getElementById('s').onclick = () => post('/api/input', { playerId: S.playerId, inputId: p.id, value: document.getElementById('x').value });
       if (p.kind === 'whisper' && (window.SpeechRecognition || window.webkitSpeechRecognition)) { try { const R = new (window.SpeechRecognition || window.webkitSpeechRecognition)(); R.lang = v.lang === 'en' ? 'en-US' : 'nl-NL'; R.onresult = (e) => { document.getElementById('x').value = e.results[0][0].transcript; }; R.start(); } catch {} }
     } catch { app.insertAdjacentHTML('afterbegin', ''); document.title = ui.reconnecting; }

@@ -395,8 +395,8 @@
       ]
     },
     "style": {
-      "nl": "zachte aquarel, warm licht, speels",
-      "en": "soft watercolour, warm light, playful"
+      "nl": "zachte aquarel, speels, eenvoudige compositie",
+      "en": "soft watercolour, playful, simple composition"
     },
     "bannedWords": {
       "nl": [
@@ -464,6 +464,36 @@
         "sports",
         "nice",
         "fun"
+      ]
+    },
+    "palettes": {
+      "nl": [
+        "koele blauwtinten",
+        "frisgroen en citroengeel",
+        "paars en roze",
+        "zeegroen en zand",
+        "rood en oker",
+        "nachtblauw met goud",
+        "pastelregenboog",
+        "zwart-wit met één felle kleur",
+        "turquoise en koraal",
+        "bosgroen en bruin",
+        "zilvergrijs en lichtblauw",
+        "oranje en diepblauw"
+      ],
+      "en": [
+        "cool blue tones",
+        "fresh green and lemon yellow",
+        "purple and pink",
+        "sea green and sand",
+        "red and ochre",
+        "midnight blue with gold",
+        "pastel rainbow",
+        "black and white with one bright colour",
+        "turquoise and coral",
+        "forest green and brown",
+        "silver grey and light blue",
+        "orange and deep blue"
       ]
     }
   }

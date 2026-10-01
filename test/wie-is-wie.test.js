@@ -170,3 +170,12 @@ test('wie-is-wie: regressie: gewone Nederlandse woorden (haar, klein, lang, oud)
   assert.equal(localCheck('een egel die haar kleine lampjes langs de oude muur hangt en daar uren naar kijkt', { banned }).leak, false);
   assert.equal(localCheck('een egel met blonde krullen', { banned }).leak, true);
 });
+
+test('wie-is-wie: regressie R1 (rooktest): kleurpalet verschilt per plaatje binnen een ronde en zit in de beeldprompt', async () => {
+  const seen = [];
+  const { s } = await simulate('wie-is-wie', { players: 24, teams: 6, chaos: { fault: (st) => { if (st.kind === 'image') seen.push(st.input.prompt); } } });
+  const W = s.ctx.store.wiw;
+  for (let k = 0; k < W.K; k++) { const pal = W.portraits.filter((p) => p.set === k).map((p) => p.palette); assert.equal(new Set(pal).size, pal.length); }
+  assert.ok(W.portraits.every((p) => seen.some((x) => x.includes(p.palette))));
+  assert.ok(!seen.some((x) => /warm licht/.test(x)));
+});

@@ -1,7 +1,7 @@
 {
   "nl": {
     "good": [
-      "een {theme} dat 's ochtends eerst drie keer rond de tafel loopt voordat het koffie zet, met een boek over vulkanen onder de arm",
+      "{theme} dat 's ochtends eerst drie keer rond de tafel loopt voordat het koffie zet, met een boek over vulkanen onder de arm",
       "{theme} die naar zeezout en kaneel ruikt, met kleine lampjes die aangaan als iemand over vroeger begint",
       "{theme} vol plakboeken met treinkaartjes uit landen die het nog wil bezoeken",
       "{theme} dat zingt onder de douche en stiekem een gouden medaille in een la bewaart",
@@ -10,7 +10,7 @@
     ],
     "generic": [
       "{theme} dat houdt van reizen en lekker eten",
-      "een gezellig {theme} met vrienden en familie"
+      "{theme}, gezellig met vrienden en familie"
     ],
     "leak": [
       "{theme} met blonde krullen en een bril",
@@ -38,7 +38,7 @@
     ],
     "generic": [
       "{theme} that likes travel and good food",
-      "a fun {theme} with friends and family"
+      "{theme}, fun with friends and family"
     ],
     "leak": [
       "{theme} with long blond hair and glasses",

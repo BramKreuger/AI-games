@@ -78,7 +78,7 @@ export default {
   limits: { minPlayers: 6, maxPlayers: 60, minTeams: 2, maxTeams: 12 },
   defaults: {
     galleryMax: 12, minPerRound: 4, maxRounds: 5, interviewSec: 300, promptSecMax: 90, maxAttempts: 2, searchSec: 210, matchSec: 60,
-    maxSimilarity: 0.85, aiTimeoutSec: 30, imageConcurrency: 8, finaleMultiplier: 2, botSkill: 0.55, aiBudgetUsd: 15,
+    maxSimilarity: 0.85, revealSec: 8, aiTimeoutSec: 30, imageConcurrency: 8, finaleMultiplier: 2, botSkill: 0.55, aiBudgetUsd: 15,
   },
 
   // Het aantal rondes hangt af van de groep: genoeg plaatjes per ronde (≥ minPerRound), hoogstens maxRounds.
@@ -132,11 +132,14 @@ export default {
     const W = ctx.store.wiw, s = ctx.settings, cfg = ctx.pack.wieIsWie ?? {};
     const K = Math.max(1, this.roundIds(ctx).length);
     const sets = cfg.questionSets ?? [];
-    const themes = loc(cfg.themes, ctx.lang) ?? [];
+    const themes = loc(cfg.themes, ctx.lang) ?? [], palettes = loc(cfg.palettes, ctx.lang) ?? [];
     const units = makePairs(this.people(ctx), ctx.rand);
     const placed = assignSets(units, K, s.galleryMax);
     const themeBag = new Map();
-    const nextTheme = (k) => { let b = themeBag.get(k); if (!b?.length) themeBag.set(k, b = shuffle(themes, ctx.rand)); return b.pop() ?? '?'; };
+    // Onderwerp en kleurpalet zijn binnen een ronde verschillend (risico R1: plaatjes die op elkaar lijken).
+    const draw = (bags, list, k) => { let b = bags.get(k); if (!b?.length) bags.set(k, b = shuffle(list, ctx.rand)); return b.pop() ?? null; };
+    const paletteBag = new Map();
+    const nextTheme = (k) => draw(themeBag, themes, k) ?? '?';
     W.K = K;
     W.portraits = [];
     placed.forEach(({ unit, set }, ui) => {
@@ -144,13 +147,15 @@ export default {
       if (unit.length < 2) return ctx.log({ type: 'note', text: `alleen: ${unit[0].id}` });
       if (unit.every((m) => m.teamId === unit[0].teamId)) ctx.log({ type: 'note', kind: 'same-team-pair', players: unit.map((m) => m.id) });
       for (const [maker, subject] of interviewsOf(unit)) {
-        const theme = nextTheme(set);
-        W.portraits.push({ id: `p${W.portraits.length + 1}`, maker: maker.id, makerTeam: maker.teamId, subject: subject.id, subjectTeam: subject.teamId, subjectName: subject.name, set, theme, questions: qs, prompt: null, asset: null, source: null });
+        const theme = nextTheme(set), palette = draw(paletteBag, palettes, set);
+        W.portraits.push({ id: `p${W.portraits.length + 1}`, maker: maker.id, makerTeam: maker.teamId, subject: subject.id, subjectTeam: subject.teamId, subjectName: subject.name, set, theme, palette, questions: qs, prompt: null, asset: null, source: null });
         ctx.tell({ teamId: maker.teamId, playerId: maker.id, text: ctx.t('private.interview', { partner: subject.name, team: this.teamName(ctx, subject.teamId), questions: qs.join(' · '), theme }) });
       }
     });
     ctx.log({ type: 'screen', text: ctx.t('interview.title') });
     ctx.log({ type: 'setup', units: placed.map((p) => ({ set: p.set, players: p.unit.map((m) => m.id) })) });
+    // Live: wacht tot iedereen op "klaar" drukt, of tot de interviewtijd om is.
+    await Promise.all(W.portraits.map((pt) => ctx.collect({ teamId: pt.makerTeam, playerId: pt.maker, kind: 'ready', timeoutSec: s.interviewSec, bot: () => true })));
   },
 
   botPrompt(ctx, pt, attempt) {
@@ -235,9 +240,9 @@ export default {
     return { total: list.length, leaks: list.filter((p) => p.leak).length, generic: list.filter((p) => p.generic).length, retried: list.filter((p) => p.attempts > 1).length, maxSim: r2(Math.max(0, ...sims)) };
   },
 
-  imagePrompt(ctx, theme, prompt) {
+  imagePrompt(ctx, theme, prompt, palette) {
     const style = loc(ctx.pack.wieIsWie?.style, ctx.lang) ?? '';
-    return `${style}. ${theme}: ${prompt}. ${ctx.t('image.safety')}`;
+    return `${style}${palette ? `, ${palette}` : ''}. ${theme}: ${prompt}. ${ctx.t('image.safety')}`;
   },
 
   // AI-stap `portrait` (beeld): parallel in golven van imageConcurrency. Terugval: stockbeeld of onderwerpkaartje.
@@ -245,15 +250,15 @@ export default {
     const todo = list.filter((p) => !p.asset);
     let done = 0;
     await ctx.ai.batch(todo.map((pt) => async () => {
-      const r = await this.image(ctx, pt.theme, pt.prompt, `portrait:${pt.id}`);
+      const r = await this.image(ctx, pt.theme, pt.prompt, `portrait:${pt.id}`, pt.palette);
       pt.asset = r.asset; pt.source = r.source;
       if (++done === todo.length || done % 4 === 0) ctx.log({ type: 'screen', kind: 'progress', text: ctx.t('gen.progress', { done, total: todo.length }) });
     }), { concurrency: ctx.settings.imageConcurrency });
   },
-  async image(ctx, theme, prompt, label) {
+  async image(ctx, theme, prompt, label, palette = null) {
     const stock = (ctx.pack.wieIsWie?.stock ?? []).find((x) => x.theme === theme)?.image;
     const r = await ctx.ai.call({
-      id: 'portrait', kind: 'image', input: { prompt: this.imagePrompt(ctx, theme, prompt) },
+      id: 'portrait', kind: 'image', input: { prompt: this.imagePrompt(ctx, theme, prompt, palette) },
       screen: () => ctx.moderator.check(prompt).ok,
       fixture: (i) => ({ image: mockImage(i.prompt, theme) }),
       validate: (o) => typeof o?.image === 'string' && o.image.startsWith('data:image/'),
@@ -321,7 +326,7 @@ export default {
     ctx.log({ type: 'screen', kind: 'gallery', round: n, text: ctx.t('round.title', { n, questions: questions.join(' · ') }),
       images: order.map((pt) => ({ asset: pt.asset, label: `${pt.no} · ${pt.theme}` })) });
     const inRound = new Set(set.flatMap((p) => [p.maker, p.subject]));
-    for (const pt of order) ctx.tell({ teamId: pt.subjectTeam, playerId: pt.subject, text: ctx.t('private.badge', { n, name: pt.subjectName }) });
+    for (const pt of order) ctx.tell({ teamId: pt.subjectTeam, playerId: pt.subject, text: ctx.t('private.badge', { n, name: pt.subjectName }), big: true });
     const speurders = this.people(ctx).filter((p) => !inRound.has(p.id));
     for (const p of speurders) ctx.tell({ teamId: p.teamId, playerId: p.id, text: ctx.t('private.search', { n }) });
     const items = order.map((pt) => ({ no: pt.no, asset: pt.asset, label: pt.theme, pt }));
@@ -339,12 +344,14 @@ export default {
     }
     // Onthulling: per plaatje naam, prompt, hoeveel het goed hadden, en een AI-zin.
     const lines = await ctx.ai.batch(order.map((pt) => () => this.commentary(ctx, pt)));
+    const reveals = [];
     order.forEach((pt, i) => {
       const got = res.filter((r) => r.seen.has(pt.no)).length;
       const correct = res.filter((r) => r.hits.has(pt.no)).length;
-      ctx.log({ type: 'screen', kind: 'reveal', round: n, no: pt.no, images: [{ asset: pt.asset, label: `${pt.no}` }],
+      reveals.push({ type: 'screen', kind: 'reveal', round: n, no: pt.no, images: [{ asset: pt.asset, label: `${pt.no}` }],
         text: `${pt.no}. ${ctx.t('reveal.line', { name: ctx.moderator.clean(pt.subjectName), theme: pt.theme })} · ${ctx.t('reveal.stats', { correct, total: got })} · “${ctx.moderator.clean(pt.prompt)}” · ${lines[i].output.line}` });
     });
+    for (const e of reveals) { ctx.log(e); await ctx.pause(ctx.settings.revealSec); }
   },
 
   // Teamportretten voor de finale (parallel aan de laatste ronde): AI voegt de prompts over de leden samen.
@@ -375,6 +382,7 @@ export default {
     const list = rest.length ? rest : W.portraits.filter((p) => p.asset);
     ctx.log({ type: 'screen', kind: 'wall', text: ctx.t(rest.length ? 'wall.title' : 'wall.recap'),
       images: list.slice(0, 60).map((p) => ({ asset: p.asset, label: `${ctx.moderator.clean(p.subjectName)} · ${p.theme}` })) });
+    await ctx.pause(20);
   },
 
   async finale(ctx, blockId) {
@@ -405,8 +413,11 @@ export default {
       if (!sc) { ctx.ledger.award(t.id, 0, ctx.t('finale.none'), blockId); continue; }
       ctx.ledger.award(t.id, r2(sc.mean * mult), ctx.t('finale.reason', { correct: sc.correct, total: sc.total, mean: sc.mean, mult }), blockId);
     }
-    for (const it of items) ctx.log({ type: 'screen', kind: 'reveal', images: [{ asset: it.asset, label: `${it.no}` }],
-      text: it.tp ? `${it.no}. ${ctx.t('finale.reveal', { team: this.teamName(ctx, it.tp.teamId) })}` : `${it.no}. ${ctx.moderator.clean(it.pt.subjectName)}` });
+    for (const it of items) {
+      ctx.log({ type: 'screen', kind: 'reveal', images: [{ asset: it.asset, label: `${it.no}` }],
+        text: it.tp ? `${it.no}. ${ctx.t('finale.reveal', { team: this.teamName(ctx, it.tp.teamId) })}` : `${it.no}. ${ctx.moderator.clean(it.pt.subjectName)}` });
+      await ctx.pause(ctx.settings.revealSec);
+    }
   },
 
   // Uitslag: compensatie voor rondes zonder speurders (gedeclareerd), daarna de uitleg per team.
