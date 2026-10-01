@@ -13,7 +13,27 @@
       "phase": 5,
       "step": "gemerged, wacht op speltest Bram",
       "pr": 1
+    },
+    {
+      "slug": "geheime-regel",
+      "branch": "game/geheime-regel",
+      "phase": 5,
+      "step": "PR open, wacht op speltest Bram",
+      "concepts_done": true,
+      "chosen": "Geheime Regel",
+      "pr": null,
+      "notes": "echte rooktest ontbreekt: engine/providers/openai.js nog niet gebouwd (OPENAI_GAME_KEY wel aanwezig)"
+    },
+    {
+      "slug": "blinde-bouwer",
+      "branch": "game/blinde-bouwer",
+      "phase": 5,
+      "step": "PR open, wacht op speltest Bram",
+      "concepts_done": true,
+      "chosen": "Blinde Bouwer",
+      "pr": null,
+      "notes": "echte rooktest ontbreekt: engine/providers/openai.js nog niet gebouwd (OPENAI_GAME_KEY wel aanwezig)"
     }
   ],
-  "next": "openai-provider voor rooktest, daarna nieuw spel"
+  "next": "openai-provider voor rooktest (engine/providers/openai.js), daarna nieuw spel"
 }

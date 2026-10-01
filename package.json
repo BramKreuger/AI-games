@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "test": "node --test test/*.test.js",
     "sim": "node engine/sim.js",
     "test:browser": "node --test --test-timeout=120000 browser-test/browser.test.js",
-    "serve": "node engine/server.js"
+    "serve": "node engine/server.js",
+    "smoke": "node engine/providers/smoke.js"
   }
 }

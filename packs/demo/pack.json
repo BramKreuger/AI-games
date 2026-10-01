@@ -285,5 +285,49 @@
         }
       }
     ]
+  },
+  "blindeBouwer": {
+    "layouts": [
+      {
+        "id": "bb1",
+        "tier": 1,
+        "items": 3,
+        "text": {
+          "nl": "Zet drie voorwerpen in een rij; het kleinste staat in het midden.",
+          "en": "Put three objects in a row; the smallest stands in the middle."
+        }
+      },
+      {
+        "id": "bb2",
+        "tier": 1,
+        "items": 3,
+        "text": {
+          "nl": "Stapel twee voorwerpen en leg het derde ernaast, aan de rechterkant.",
+          "en": "Stack two objects and lay the third next to them, on the right."
+        }
+      },
+      {
+        "id": "bb3",
+        "tier": 2,
+        "items": 4,
+        "text": {
+          "nl": "Maak een vierkant van vier voorwerpen; het zwaarste ligt linksonder.",
+          "en": "Make a square of four objects; the heaviest lies bottom left."
+        }
+      },
+      {
+        "id": "bb4",
+        "tier": 3,
+        "items": 5,
+        "text": {
+          "nl": "Bouw een trap van vijf voorwerpen, van laag naar hoog, van links naar rechts.",
+          "en": "Build a staircase of five objects, from low to high, left to right."
+        }
+      }
+    ],
+    "finale": {
+      "nl": "Bouw samen één lange brug van alle voorwerpen, met het grootste voorwerp in het midden.",
+      "en": "Together build one long bridge of all objects, with the largest object in the middle."
+    }
   }
 }
