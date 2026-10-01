@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import game, { assignRoles, bandOf } from '../games/levend-beeld/index.js';
-import { simulate } from '../engine/sim-generic.js';
+import { simulate, loadPack } from '../engine/sim-generic.js';
 
 const team = (n, optOutIdx = []) => ({ id: 'T', players: Array.from({ length: n }, (_, i) => ({ id: `P${i}`, connected: true, optOut: optOutIdx.includes(i) })) });
 
@@ -37,9 +37,9 @@ test('lek-check: beschrijving die het begrip noemt wordt afgekeurd', () => {
 });
 
 test('lek: AI die het begrip noemt leidt tot terugval, niet tot spoiler op scherm', async () => {
-  const r = await simulate('levend-beeld', { mode: 'live', players: 8, teams: 4, provider: async (st) => (st.id === 'describe' ? { description: 'Dit is duidelijk een zonsopgang en een boom in de wind en een rollercoaster' } : { sim: 0.5 }) });
+  const r = await simulate('levend-beeld', { mode: 'live', players: 8, teams: 4, provider: async (st) => (st.id === 'describe' ? { description: `Dit is duidelijk ${loadPack().levendBeeld.concepts.map((c) => c.text.nl).join(' en ')}` } : { sim: 0.5 }) });
   const shown = r.s.events.filter((e) => e.kind === 'describe' && e.team !== 'all').map((e) => e.text.toLowerCase()).join(' ');
-  assert.ok(!/zonsopgang|rollercoaster|boom in de wind/.test(shown));
+  assert.ok(!/zonsopgang|rollercoaster|boom in de wind|file op maandag|orkest|vlucht|vergadering|mascotte|storm/.test(shown), shown);
 });
 
 test('scoring: AI-storing geeft beide teams dezelfde vaste punten (eerlijk)', async () => {
