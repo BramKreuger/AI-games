@@ -5,6 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { createSession, makeTeams, validateExport } from './index.js';
 import { loadGame, loadPack } from './sim-generic.js';
 import { listGames } from './registry.js';
+import { createOpenAIProvider } from './providers/openai.js';
 
 const WEB = new URL('./web/', import.meta.url);
 const page = (f) => readFileSync(new URL(f, WEB), 'utf8');
@@ -19,13 +20,14 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
   const connected = (p) => now() - p.lastSeen < presenceSec * 1000;
   const teamList = () => [...new Set([...players.values()].map((p) => p.teamId))].sort();
 
-  const inputs = ({ teamId, playerId, kind, timeoutSec }) => new Promise((resolve) => {
+  const inputs = ({ teamId, playerId, kind, timeoutSec, data = null }) => new Promise((resolve) => {
     const id = `i${++seq}`;
     const t = setTimeout(() => { pending.delete(id); resolve(null); }, Math.max(50, timeoutSec * 1000 * timeoutScale));
-    pending.set(id, { id, teamId, playerId, kind, timeoutSec, resolve: (v) => { clearTimeout(t); pending.delete(id); resolve(v); } });
+    pending.set(id, { id, teamId, playerId, kind, timeoutSec, data, resolve: (v) => { clearTimeout(t); pending.delete(id); resolve(v); } });
   });
 
-  async function start({ slug, lang = 'nl', durationMin = 40, bots = 0, settings = {} }) {
+  // mode 'live': echte AI via de OpenAI-provider (sleutel in OPENAI_GAME_KEY); zonder sleutel blijft het testmodus.
+  async function start({ slug, lang = 'nl', durationMin = 40, bots = 0, settings = {}, mode = 'test' }) {
     if (run && run.state === 'running') throw new Error('sessie loopt al; stop die eerst');
     for (const [id, p] of players) if (p.bot) players.delete(id);
     const { game, defaults } = await loadGame(slug);
@@ -34,11 +36,12 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
     }
     const byTeam = new Map();
     for (const p of players.values()) (byTeam.get(p.teamId) ?? byTeam.set(p.teamId, []).get(p.teamId)).push(p);
-    const teams = [...byTeam].map(([id, ps]) => ({ id, name: id, active: true, players: ps.map((p) => ({ id: p.id, connected: true, optOut: p.optOut, _ref: p })) }));
+    const teams = [...byTeam].map(([id, ps]) => ({ id, name: id, active: true, players: ps.map((p) => ({ id: p.id, name: p.name, connected: true, optOut: p.optOut, _ref: p })) }));
     const sync = () => teams.forEach((t) => t.players.forEach((q) => { q.connected = q._ref.bot || connected(q._ref); }));
     sync(); const iv = setInterval(sync, 1000);
     let stopped = false;   // na reset: invoer geeft direct null, de oude sessie loopt snel leeg
-    const session = createSession({ game, pack, teams, durationMin, lang, defaults, settings, mode: 'test', inputs: (r) => (stopped ? Promise.resolve(null) : botReply(r, players) ?? inputs(r)), id: `live-${Date.now()}` });
+    const provider = mode === 'live' ? createOpenAIProvider() : null;
+    const session = createSession({ game, pack, teams, durationMin, lang, defaults, settings, mode: provider ? 'live' : 'test', provider, inputs: (r) => (stopped ? Promise.resolve(null) : botReply(r, players) ?? inputs(r)), id: `live-${Date.now()}` });
     const mine = run = { slug, lang, session, state: 'running', result: null, cursor: 0, stop: () => { stopped = true; } };
     session.run().then((r) => { mine.result = r; if (mine.state === 'running') mine.state = 'done'; }).catch((e) => { mine.state = 'error'; mine.error = e.message; }).finally(() => clearInterval(iv));
     return { teams: teams.length };
@@ -52,6 +55,8 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
     const words = ['boom', 'zon', 'wind', 'rollercoaster', 'file'];
     if (kind === 'photo') return Promise.resolve({ id: 'bot', people: 3, flags: [] });
     if (kind === 'vote' || kind === 'blame') return Promise.resolve(1);
+    if (kind === 'match') return Promise.resolve({});
+    if (kind === 'prompt') return Promise.resolve('een vrolijk dier dat graag buiten is');
     return Promise.resolve(words[Math.floor(Math.random() * words.length)]);
   }
 
@@ -73,7 +78,7 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
     return {
       state: run?.state ?? 'lobby', lang: run?.lang ?? 'nl', slug: run?.slug ?? null,
       me: p ? { id: p.id, name: p.name, teamId: p.teamId } : null,
-      prompt: pend ? { id: pend.id, kind: pend.kind, timeoutSec: pend.timeoutSec } : null,
+      prompt: pend ? { id: pend.id, kind: pend.kind, timeoutSec: pend.timeoutSec, data: pend.data ?? null } : null,
       private: priv?.text ?? null,
       screen: screenEvents().slice(-40),
       totals: s ? s.ledger.totals((s.ctx.teams ?? []).map((t) => t.id)) : [],
@@ -89,6 +94,12 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
       }
       if (req.method === 'GET' && u.pathname === '/web/common.js') { res.writeHead(200, { 'content-type': 'text/javascript' }); return res.end(page('common.js')); }
       if (req.method === 'GET' && u.pathname === '/web/ui.json') return json(res, JSON.parse(page('ui.json')));
+      if (req.method === 'GET' && u.pathname.startsWith('/asset/')) {   // sessiebestand (AI-beeld) uit ctx.assets
+        const a = run?.session.assets.get(u.pathname.slice(7)); const m = a && /^data:([^;,]+)(;base64)?,(.*)$/s.exec(a.data);
+        if (!m) { res.writeHead(404); return res.end(); }
+        res.writeHead(200, { 'content-type': m[1], 'cache-control': 'max-age=3600' });
+        return res.end(m[2] ? Buffer.from(m[3], 'base64') : decodeURIComponent(m[3]));
+      }
       if (req.method === 'GET' && u.pathname === '/api/state') return json(res, view(u.searchParams.get('player')));
       if (req.method === 'GET' && u.pathname === '/api/dashboard') {
         const s = run?.session;

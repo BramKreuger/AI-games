@@ -24,20 +24,32 @@ export function createSession({ game, pack = {}, teams, mode = 'test', lang = 'n
   const clock = createClock(restore?.at ?? 0);
   const moderator = createModerator(pack.blocklist ?? []);
   const aiStats = {};
-  const ai = createAI({ mode, provider, moderator, clock, chaos, stats: aiStats, timeoutMs: cfg.aiTimeoutSec * 1000 });
+  const ai = createAI({ mode, provider, moderator, clock, chaos, stats: aiStats, timeoutMs: cfg.aiTimeoutSec * 1000, budgetUsd: cfg.aiBudgetUsd ?? Infinity });
+  // Bestanden van de sessie (bijv. AI-beelden als data-URL); het scherm en de telefoons verwijzen met een id.
+  const assetStore = new Map(restore?.assets ?? []);
+  const assets = {
+    put(data, meta = {}) { const id = `a${assetStore.size + 1}`; assetStore.set(id, { data, ...meta }); return id; },
+    get: (id) => assetStore.get(id) ?? null,
+    size: () => assetStore.size,
+  };
+  // Engine 1.2: blokken mogen afhangen van de groep (aantal spelers/teams); spellen die dat negeren werken ongewijzigd.
+  const groupInfo = { players, teams: teams.length };
   const ledger = createLedger(id, restore?.entries);
   const done = new Set(restore?.done ?? []);
   const events = [];
   const ctx = {
-    teams, settings: cfg, pack, lang, mode, clock, ai, ledger, moderator, rand: rng(seed),
+    teams, settings: cfg, pack, lang, mode, clock, ai, ledger, moderator, rand: rng(seed), assets, group: groupInfo,
+    // Engine 1.2: spelstatus die een serverherstart overleeft (zit in snapshot/restore); `plan` = geplande blokken.
+    store: structuredClone(restore?.store ?? {}), plan: [],
     t: createT({ lang, defaults, pack }),
     // Idempotente stap: na serverherstart wordt een reeds uitgevoerde stap overgeslagen.
     async once(key, fn) { if (done.has(key)) return; await fn(); done.add(key); },
     // Invoer van spelers. Testmodus: bot(); live: `inputs` (telefoons). Geen antwoord (uitval/no-show) => null.
-    async collect({ teamId, playerId = null, kind, timeoutSec = 60, bot }) {
+    // Engine 1.2: `data` (optioneel) gaat mee naar de telefoon, bijv. de keuzelijst bij koppelen.
+    async collect({ teamId, playerId = null, kind, timeoutSec = 60, bot, data = null }) {
       let v = null;
       if (chaos.inputFault?.({ kind, teamId, playerId }) === 'drop') v = null;
-      else if (inputs) { try { v = await inputs({ teamId, playerId, kind, timeoutSec }); } catch { v = null; } }
+      else if (inputs) { try { v = await inputs({ teamId, playerId, kind, timeoutSec, data }); } catch { v = null; } }
       else v = bot ? bot() : null;
       events.push({ at: clock.now(), type: 'input', kind, teamId, got: v != null });
       return v ?? null;
@@ -49,11 +61,12 @@ export function createSession({ game, pack = {}, teams, mode = 'test', lang = 'n
   };
 
   return {
-    ctx, events, ledger, aiStats,
-    snapshot: () => ({ entries: ledger.entries(), done: [...done], at: clock.now() }),
-    plan: () => planBlocks(game.blocks(cfg), durationMin),
+    ctx, events, ledger, aiStats, assets,
+    snapshot: () => ({ entries: ledger.entries(), done: [...done], at: clock.now(), assets: [...assetStore], store: structuredClone(ctx.store) }),
+    plan: () => planBlocks(game.blocks(cfg, groupInfo), durationMin),
     async run() {
-      const plan = planBlocks(game.blocks(cfg), durationMin);
+      const plan = planBlocks(game.blocks(cfg, groupInfo), durationMin);
+      ctx.plan = plan;
       const timing = [];
       for (const block of plan) {
         const t0 = clock.now();
