@@ -1,0 +1,11 @@
+{
+  "intro": "Schrijf met je team de beste opdracht voor de AI. Beweeg, overleg, en kies samen.",
+  "round.title": "Ronde {n}: {topic}",
+  "round.reason": "AI-beoordeling ronde {n} ({topic}): {score}/10",
+  "round.empty": "Geen deelnemers beschikbaar",
+  "vote.reason": "{votes} stem(men)",
+  "finale.reason": "Finale: {score}/10 (dubbele punten)",
+  "finale.title": "Finale: alle teams doen mee",
+  "fallback.comment": "De AI was even weg; jullie krijgen een gemiddelde score.",
+  "correction.reason": "Correctie: {why}"
+}

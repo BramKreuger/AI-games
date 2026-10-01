@@ -1,0 +1,10 @@
+{
+  "name": "demo",
+  "customer": "Demo B.V.",
+  "topics": {
+    "nl": ["De perfecte lunch", "Een nieuw kantoorritueel", "Onze eigen mascotte"],
+    "en": ["The perfect lunch", "A new office ritual", "Our own mascot"]
+  },
+  "texts": { "nl": {}, "en": {} },
+  "blocklist": []
+}

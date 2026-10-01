@@ -1,0 +1,11 @@
+{
+  "intro": "Write the best instruction for the AI with your team. Move, talk, and choose together.",
+  "round.title": "Round {n}: {topic}",
+  "round.reason": "AI rating round {n} ({topic}): {score}/10",
+  "round.empty": "No players available in round {n}",
+  "vote.reason": "{votes} vote(s)",
+  "finale.reason": "Finale: {score}/10 (double points)",
+  "finale.title": "Finale: every team plays",
+  "fallback.comment": "The AI was away; you get an average score.",
+  "correction.reason": "Correction: {why}"
+}
