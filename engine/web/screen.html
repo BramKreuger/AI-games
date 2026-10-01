@@ -1,0 +1,23 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Groot scherm</title>
+<style>
+:root{--bg:#0b1020;--fg:#fff;--ac:#ffd166}body{margin:0;background:var(--bg);color:var(--fg);font:36px/1.35 system-ui,sans-serif}
+main{padding:32px 48px;display:grid;grid-template-columns:2fr 1fr;gap:32px;height:100vh;box-sizing:border-box}h1,h2{font-size:48px;margin:0 0 12px;color:var(--ac)}
+.line{margin:10px 0;font-size:36px}.lines{overflow:hidden}.board p{margin:6px 0;font-size:36px}.big{font-size:44px}
+</style></head><body><main><section><h1 id="title">AI-games</h1><div class="lines" id="lines"></div></section><aside class="board"><h2 id="bt"></h2><div id="board"></div></aside></main>
+<script src="/web/common.js"></script>
+<script>
+(async () => {
+  const all = await (await fetch('/web/ui.json')).json(); let lang = 'nl';
+  async function tick() {
+    const v = await api('/api/state'); lang = v.lang; const ui = all[lang] ?? all.nl; document.documentElement.lang = lang;
+    document.getElementById('bt').textContent = ui.leaderboard;
+    document.getElementById('board').innerHTML = v.totals.map((t) => `<p>${esc(t.teamId)} — ${t.points}</p>`).join('');
+    const evs = v.screen.slice(-6);
+    document.getElementById('lines').innerHTML = evs.map((e) => {
+      const t = e.kind === 'describe' ? `${ui.describe} ${e.text}` : e.kind === 'reveal' ? `${ui.reveal} “${e.concept}” · ${ui.guessed}: ${e.guess}` : e.kind === 'chain' ? `${ui.original}: ${e.original} → ${ui.chain}: ${e.final}` : e.kind === 'link' ? `${e.i}. ${e.text}` : e.text;
+      return t ? `<div class="line">${esc(t)}</div>` : '';
+    }).join('');
+  }
+  setInterval(tick, 1000); tick();
+})();
+</script></body></html>

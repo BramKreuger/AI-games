@@ -122,6 +122,8 @@ export default {
       const concept = pool[((n - 1) * teams.length + i) % pool.length];
       const roles = assignRoles(maker, n);
       ctx.log({ type: 'roles', team: maker.id, round: n, roles });
+      const director = Object.entries(roles).find(([, r]) => r.includes('regisseur'))?.[0];
+      if (director) ctx.tell({ teamId: maker.id, playerId: director, text: ctx.t('private.concept', { concept: concept.text }) });
       const makerHere = connected(maker).length > 0, guesserHere = connected(guesser).length > 0;
       if (!guesserHere) { ctx.ledger.award(guesser.id, 0, ctx.t('empty', { n }), blockId); }
       if (!makerHere) ctx.ledger.award(maker.id, 0, ctx.t('empty', { n }), blockId);

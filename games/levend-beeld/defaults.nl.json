@@ -27,5 +27,6 @@
   "finale.contribution": "Finale: bijdrage aan het Gigabeeld ({n} spelers in beeld)",
   "results.title": "Uitslag",
   "correction.reason": "Correctie: {why}",
-  "fallback.moderated": "Ronde {n}: foto geblokkeerd door moderatie; vaste oefenpunten voor beide teams"
+  "fallback.moderated": "Ronde {n}: foto geblokkeerd door moderatie; vaste oefenpunten voor beide teams",
+  "private.concept": "Jullie geheime begrip: {concept}. Wijs en gebaar, praat niet."
 }

@@ -42,6 +42,8 @@ export function createSession({ game, pack = {}, teams, mode = 'test', lang = 'n
       events.push({ at: clock.now(), type: 'input', kind, teamId, got: v != null });
       return v ?? null;
     },
+    // Privébericht aan een team of speler (bijv. het geheime begrip voor de regisseur). Nooit naar het grote scherm.
+    tell({ teamId, playerId = null, text }) { events.push({ at: clock.now(), type: 'private', teamId, playerId, text }); },
     log: (e) => events.push({ at: clock.now(), ...e }),
     activeTeams: () => teams.filter((t) => t.active),
   };

@@ -27,5 +27,6 @@
   "finale.contribution": "Finale: contribution to the Giga Picture ({n} players in the picture)",
   "results.title": "Results",
   "correction.reason": "Correction: {why}",
-  "fallback.moderated": "Round {n}: photo blocked by moderation; fixed practice points for both teams"
+  "fallback.moderated": "Round {n}: photo blocked by moderation; fixed practice points for both teams",
+  "private.concept": "Your secret concept: {concept}. Point and gesture, do not talk."
 }

@@ -94,6 +94,7 @@ export default {
   // transcriptie en afstandsmeting draaien daarna parallel, dus de AI-tijd is onafhankelijk van de ketenlengte.
   async processChain(ctx, chain, original) {
     const spoken = []; let prev = original;
+    ctx.tell({ teamId: chain[0].team.id, playerId: chain[0].player.id, text: ctx.t('private.sentence', { sentence: original }) });
     for (const link of chain) {
       const sp = await ctx.collect({ teamId: link.team.id, playerId: link.player.id, kind: 'whisper', timeoutSec: 20, bot: () => this.botMutate(ctx, prev) });
       spoken.push(sp == null ? null : String(sp));

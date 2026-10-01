@@ -14,8 +14,18 @@ export async function simulate(opts = {}) {
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
-  for (const [players, teams, d] of [[4, 2, 20], [12, 4, 40], [60, 12, 60], [13, 5, 40]]) {
-    const { res, valid } = await simulate({ players, teams, durationMin: d });
-    console.log(`${players}p/${teams}t/${d}min: ${res.plan.map((b) => `${b.id}=${b.minutes}`).join(' ')} export=${valid.valid ? 'ok' : valid.errors} top=${res.totals[0].teamId}:${res.totals[0].points}`);
+  const slug = process.argv[2] ?? 'demo';
+  const grid = [[4, 2, 20], [12, 4, 40], [60, 12, 60], [13, 5, 40]];
+  if (slug === 'demo') {
+    for (const [players, teams, d] of grid) {
+      const { res, valid } = await simulate({ players, teams, durationMin: d });
+      console.log(`${players}p/${teams}t/${d}min: ${res.plan.map((b) => `${b.id}=${b.minutes}`).join(' ')} export=${valid.valid ? 'ok' : valid.errors} top=${res.totals[0].teamId}:${res.totals[0].points}`);
+    }
+  } else {
+    const { simulate: gen } = await import('./sim-generic.js');
+    for (const [players, teams, d] of grid) {
+      const { res, valid } = await gen(slug, { players, teams, durationMin: d });
+      console.log(`${players}p/${teams}t/${d}min: ${res.plan.map((b) => `${b.id}=${b.minutes}`).join(' ')} export=${valid.valid ? 'ok' : valid.errors} top=${res.totals[0].teamId}:${res.totals[0].points}`);
+    }
   }
 }

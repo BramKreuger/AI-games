@@ -25,5 +25,6 @@
   "finale.vote": "Finale: {votes} vote(s) for the most creative mistake",
   "results.title": "Results",
   "correction.reason": "Correction: {why}",
-  "reveal.blocked": "***"
+  "reveal.blocked": "***",
+  "private.sentence": "Whisper this sentence on to the next player: {sentence}"
 }
