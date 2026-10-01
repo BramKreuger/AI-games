@@ -4,6 +4,16 @@ Dit document vervangt de STOP-momenten van `/nieuw-spel` voor geplande runs. Han
 `/nieuw-spel` blijft met STOP-momenten werken. Fasen en eisen (onderzoek, DESIGN.md, bouwen, testen,
 oplevering) zijn ongewijzigd; alleen het wachten op akkoord is vervangen door zelfcontrole en een PR.
 
+## Parallelle en eerdere runs (eerst doen)
+Elke run krijgt een eigen sessiebranch (`claude/<naam>`) en ziet het werk van andere runs alleen via GitHub.
+Zonder deze controle ontstaan dubbele concepten. Dus vóór je iets doet:
+1. `git fetch origin`; bekijk `git branch -r`, de open PR's (GitHub MCP `list_pull_requests`) en `docs/spellen-overzicht.md`.
+2. Bestaat er een open PR of een `claude/*`-branch met nieuwer werk dan de standaardbranch? Bouw daarop voort
+   (`git checkout -B <jouw sessiebranch> origin/<die branch>`) in plaats van opnieuw te beginnen.
+3. Heeft een andere branch alleen een Fase 1-document dat al in een spel-PR zit: negeer die, herhaal het niet.
+4. Is er een spel-PR open die wacht op Bram: begin geen nieuw spel (zie Grenzen). Stop stil.
+5. Werk de state bij en commit die mee, zodat de volgende run het ziet.
+
 ## Status bijhouden
 Bestand `docs/routine-state.json` (op de branch van het spel; standaardwaarde als het niet bestaat: `{"games":[]}`):
 `{"games":[{"slug","branch","phase":0-5,"step","concepts_done":bool,"chosen":"naam","pr":nummer|null,"notes":""}]}`
@@ -31,7 +41,10 @@ Elke run leest dit eerst, hervat en schrijft het bij elke commit bij. Nooit opni
   (`/opt/pw-browsers/chromium`). Engine-uitbreidingen alleen achterwaarts compatibel; daarna alle spel-sims draaien.
   Bouw ontbrekende engine-delen (netwerklaag, telefoon/scherm/dashboard) als generieke voorziening in `engine/`,
   zodra een spel ze nodig heeft, en hergebruik ze daarna.
-- **Rooktest met echte providers**: alleen als een API-sleutel in de omgeving staat. Anders overslaan en in de PR
+- **Rooktest met echte providers**: alleen als een API-sleutel in de omgeving staat (nu `OPENAI_GAME_KEY`, OpenAI;
+  controleer met `[ -n "$OPENAI_GAME_KEY" ]` zonder de waarde te tonen). Bouw daarvoor een generieke provider in
+  `engine/providers/openai.js` (vision, embeddings, spraak, moderatie) achter `mode: 'live'`; eerst met een klein
+  budget (max ~$1 per run) en meld werkelijke latency en kosten in de PR. Anders overslaan en in de PR
   vermelden dat die ontbreekt. Nooit sleutels in de repo.
 - **Bug**: oplossen, regressietest, alles opnieuw draaien. Een test nooit overslaan of uitzetten om groen te worden.
 - Niet hergebruiken: mechanieken uit spellen-overzicht.md, tenzij duidelijk beter.

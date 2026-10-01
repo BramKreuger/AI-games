@@ -1,0 +1,19 @@
+{
+  "games": [
+    {
+      "slug": "levend-beeld",
+      "branch": "merged",
+      "phase": 5,
+      "step": "gemerged, wacht op speltest Bram",
+      "pr": 1
+    },
+    {
+      "slug": "stille-post",
+      "branch": "merged",
+      "phase": 5,
+      "step": "gemerged, wacht op speltest Bram",
+      "pr": 1
+    }
+  ],
+  "next": "openai-provider voor rooktest, daarna nieuw spel"
+}
