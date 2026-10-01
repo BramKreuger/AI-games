@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { simulate, loadGame, loadPack } from '../engine/sim-generic.js';
 import { createSession, makeTeams, validateExport } from '../engine/index.js';
 
-const SLUGS = ['levend-beeld', 'stille-post'];
+const SLUGS = ['levend-beeld', 'stille-post', 'blinde-bouwer'];
 const BAD = ['fuck jullie', 'k u t', 'sh1t', 'n4zi', 'KANKER', 'f.u.c.k'];
 
 const check = ({ res, valid, s, teams }, durationMin) => {

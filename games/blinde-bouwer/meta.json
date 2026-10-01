@@ -1,0 +1,3 @@
+{ "title": { "nl": "Blinde Bouwer", "en": "Blind Builder" },
+  "summary": { "nl": "Teams bouwen met gesloten ogen een geheim plan van de AI na, geleid door woorden; een ander team is scheidsrechter en de AI vergelijkt de foto met het plan.", "en": "Teams rebuild an AI-made secret plan with eyes closed, guided by words only; another team referees and the AI compares the photo with the plan." },
+  "status": "speltest-nodig", "tags": ["fysiek", "camera", "vision", "communicatie"] }
