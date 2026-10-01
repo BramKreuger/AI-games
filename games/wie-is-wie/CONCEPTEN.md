@@ -122,3 +122,10 @@ en blijft binnen 20 minuten speelbaar.
 1. Doelwit weigert een feit of geeft een nepfeit: willen we een verplichte "nepfeit" voor iedereen? Dat maakt raden lastiger en kennismaken leuker.
 2. Raden door fysiek achter iemand gaan staan (A) of alleen via de telefoon? Fysiek is leuker maar vraagt ruimte.
 3. Beeldstijl vast (pakket bepaalt: aquarel, cartoon, enz.) of per team vrij?
+
+## Gekozen (na overleg met Bram, 2026-10-01)
+Concept A, aangepast op zijn feedback: iedereen interviewt in een cross-team tweetal (niet één doelwit per team, want dan weten
+80% van de spelers het antwoord al). Geen rij, maar vrij rondlopen. Bij veel spelers (tot 50) toont een "schijnwerper" een deel
+van de portretten per ronde (Weerwolf-gevoel: kandidaten mogen liegen, een nepplaatje bij niemand). Rondes verschillen per
+twist (vrij, woordlimiet, nieuw tweetal, schaduw) om 40-60 min te vullen. Orakel (B) vervalt als apart blok; Verbod-ladder (3)
+zit in ronde 2.
