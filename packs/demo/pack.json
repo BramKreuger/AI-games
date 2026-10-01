@@ -2,9 +2,288 @@
   "name": "demo",
   "customer": "Demo B.V.",
   "topics": {
-    "nl": ["De perfecte lunch", "Een nieuw kantoorritueel", "Onze eigen mascotte"],
-    "en": ["The perfect lunch", "A new office ritual", "Our own mascot"]
+    "nl": [
+      "De perfecte lunch",
+      "Een nieuw kantoorritueel",
+      "Onze eigen mascotte"
+    ],
+    "en": [
+      "The perfect lunch",
+      "A new office ritual",
+      "Our own mascot"
+    ]
   },
-  "texts": { "nl": {}, "en": {} },
-  "blocklist": []
+  "texts": {
+    "nl": {},
+    "en": {}
+  },
+  "blocklist": [],
+  "levendBeeld": {
+    "concepts": [
+      {
+        "id": "lb1",
+        "tier": 1,
+        "text": {
+          "nl": "een zonsopgang",
+          "en": "a sunrise"
+        },
+        "cues": {
+          "nl": "iemand ligt laag, anderen reiken langzaam omhoog met open armen",
+          "en": "one person low, others slowly reaching up with open arms"
+        },
+        "aliases": {
+          "nl": [
+            "zonsopkomst",
+            "opkomende zon"
+          ],
+          "en": [
+            "sun rising",
+            "dawn"
+          ]
+        }
+      },
+      {
+        "id": "lb2",
+        "tier": 1,
+        "text": {
+          "nl": "een boom in de wind",
+          "en": "a tree in the wind"
+        },
+        "cues": {
+          "nl": "een lange rechte figuur met zwaaiende armen en zijwaarts leunende takken",
+          "en": "one tall straight figure with swaying arms and sideways leaning branches"
+        },
+        "aliases": {
+          "nl": [
+            "boom",
+            "bomen waaien"
+          ],
+          "en": [
+            "windy tree",
+            "swaying tree"
+          ]
+        }
+      },
+      {
+        "id": "lb3",
+        "tier": 1,
+        "text": {
+          "nl": "een rollercoaster",
+          "en": "a roller coaster"
+        },
+        "cues": {
+          "nl": "een rij mensen achter elkaar met handen omhoog en een golvende lijn",
+          "en": "a line of people behind each other with hands up in a wavy line"
+        },
+        "aliases": {
+          "nl": [
+            "achtbaan",
+            "pretpark attractie"
+          ],
+          "en": [
+            "theme park ride",
+            "coaster"
+          ]
+        }
+      },
+      {
+        "id": "lb4",
+        "tier": 2,
+        "text": {
+          "nl": "een file op maandag",
+          "en": "a traffic jam on monday"
+        },
+        "cues": {
+          "nl": "mensen dicht achter elkaar met opgetrokken schouders en boze gezichten",
+          "en": "people close behind each other with hunched shoulders and angry faces"
+        },
+        "aliases": {
+          "nl": [
+            "files",
+            "stilstaand verkeer"
+          ],
+          "en": [
+            "traffic jam",
+            "gridlock"
+          ]
+        }
+      },
+      {
+        "id": "lb5",
+        "tier": 2,
+        "text": {
+          "nl": "een orkest met dirigent",
+          "en": "an orchestra with a conductor"
+        },
+        "cues": {
+          "nl": "een figuur voorop met zwaaiende armen en anderen in een halve cirkel met denkbeeldige instrumenten",
+          "en": "one figure in front waving arms and others in a half circle with imaginary instruments"
+        },
+        "aliases": {
+          "nl": [
+            "dirigent",
+            "symfonieorkest"
+          ],
+          "en": [
+            "conductor",
+            "symphony"
+          ]
+        }
+      },
+      {
+        "id": "lb6",
+        "tier": 2,
+        "text": {
+          "nl": "een uitgestelde vlucht",
+          "en": "a delayed flight"
+        },
+        "cues": {
+          "nl": "mensen die op koffers zitten en naar een denkbeeldig bord omhoog kijken",
+          "en": "people sitting on suitcases looking up at an imaginary board"
+        },
+        "aliases": {
+          "nl": [
+            "vertraagde vlucht",
+            "vliegveld wachten"
+          ],
+          "en": [
+            "flight delay",
+            "airport waiting"
+          ]
+        }
+      },
+      {
+        "id": "lb7",
+        "tier": 3,
+        "text": {
+          "nl": "de vergadering die had kunnen zijn een mail",
+          "en": "the meeting that could have been an email"
+        },
+        "cues": {
+          "nl": "een lange tafel met half slapende mensen en één persoon die enthousiast gebaart",
+          "en": "a long table with half asleep people and one person gesturing enthusiastically"
+        },
+        "aliases": {
+          "nl": [
+            "nutteloze vergadering",
+            "saaie meeting"
+          ],
+          "en": [
+            "pointless meeting",
+            "boring meeting"
+          ]
+        }
+      },
+      {
+        "id": "lb8",
+        "tier": 3,
+        "text": {
+          "nl": "onze eigen mascotte",
+          "en": "our own mascot"
+        },
+        "cues": {
+          "nl": "een grote figuur opgebouwd uit meerdere mensen met een brede glimlach en opgeheven armen",
+          "en": "a big figure built from several people with a wide smile and raised arms"
+        },
+        "aliases": {
+          "nl": [
+            "mascotte",
+            "maskotte"
+          ],
+          "en": [
+            "mascot",
+            "team mascot"
+          ]
+        }
+      },
+      {
+        "id": "lb9",
+        "tier": 3,
+        "text": {
+          "nl": "de stilte voor de storm",
+          "en": "the calm before the storm"
+        },
+        "cues": {
+          "nl": "mensen die stil staan met ingehouden adem en blikken naar de lucht",
+          "en": "people standing still holding their breath looking at the sky"
+        },
+        "aliases": {
+          "nl": [
+            "voor de storm",
+            "windstil"
+          ],
+          "en": [
+            "before the storm",
+            "calm before storm"
+          ]
+        }
+      }
+    ],
+    "finaleSuggestions": {
+      "nl": [
+        "een feest",
+        "de zee",
+        "een vulkaan",
+        "onze plattegrond"
+      ],
+      "en": [
+        "a party",
+        "the sea",
+        "a volcano",
+        "our floor plan"
+      ]
+    }
+  },
+  "stillePost": {
+    "sentences": [
+      {
+        "id": "sp1",
+        "tier": 1,
+        "text": {
+          "nl": "De rode fiets staat naast de blauwe deur",
+          "en": "The red bicycle stands next to the blue door"
+        }
+      },
+      {
+        "id": "sp2",
+        "tier": 1,
+        "text": {
+          "nl": "Morgen halen wij verse broodjes bij de bakker",
+          "en": "Tomorrow we pick up fresh rolls at the bakery"
+        }
+      },
+      {
+        "id": "sp3",
+        "tier": 2,
+        "text": {
+          "nl": "Zes kleine vissen zwemmen langzaam door het donkere water",
+          "en": "Six small fish slowly swim through the dark water"
+        }
+      },
+      {
+        "id": "sp4",
+        "tier": 2,
+        "text": {
+          "nl": "De directeur danst op het dak met een gele paraplu",
+          "en": "The director dances on the roof with a yellow umbrella"
+        }
+      },
+      {
+        "id": "sp5",
+        "tier": 3,
+        "text": {
+          "nl": "Alleen wie zacht fluistert hoort het geheim van de oude vuurtoren",
+          "en": "Only those who whisper softly hear the secret of the old lighthouse"
+        }
+      },
+      {
+        "id": "sp6",
+        "tier": 3,
+        "text": {
+          "nl": "Na de regen ruikt het park naar warme koekjes en natte hond",
+          "en": "After the rain the park smells of warm cookies and wet dog"
+        }
+      }
+    ]
+  }
 }

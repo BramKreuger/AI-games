@@ -10,9 +10,10 @@ import { rng } from './bots.js';
 export { ENGINE_VERSION, planBlocks };
 export { validateExport } from './ledger.js';
 export { makeTeams, rng } from './bots.js';
+export { embed, cosine, similarity, distance, tokens } from './embed.js';
 
 export function createSession({ game, pack = {}, teams, mode = 'test', lang = 'nl', settings = {}, durationMin = 40,
-  defaults = {}, provider = null, chaos = {}, seed = 1, id = 'session', restore = null }) {
+  defaults = {}, provider = null, inputs = null, chaos = {}, seed = 1, id = 'session', restore = null }) {
   if (!satisfies(ENGINE_VERSION, game.engineVersion)) throw new Error(`${game.id} vraagt engine ${game.engineVersion}, huidig ${ENGINE_VERSION}`);
   const L = game.limits;
   const players = teams.reduce((s, t) => s + t.players.length, 0);
@@ -32,6 +33,15 @@ export function createSession({ game, pack = {}, teams, mode = 'test', lang = 'n
     t: createT({ lang, defaults, pack }),
     // Idempotente stap: na serverherstart wordt een reeds uitgevoerde stap overgeslagen.
     async once(key, fn) { if (done.has(key)) return; await fn(); done.add(key); },
+    // Invoer van spelers. Testmodus: bot(); live: `inputs` (telefoons). Geen antwoord (uitval/no-show) => null.
+    async collect({ teamId, playerId = null, kind, timeoutSec = 60, bot }) {
+      let v = null;
+      if (chaos.inputFault?.({ kind, teamId, playerId }) === 'drop') v = null;
+      else if (inputs) { try { v = await inputs({ teamId, playerId, kind, timeoutSec }); } catch { v = null; } }
+      else v = bot ? bot() : null;
+      events.push({ at: clock.now(), type: 'input', kind, teamId, got: v != null });
+      return v ?? null;
+    },
     log: (e) => events.push({ at: clock.now(), ...e }),
     activeTeams: () => teams.filter((t) => t.active),
   };
