@@ -11,7 +11,8 @@ Zonder deze controle ontstaan dubbele concepten. Dus vóór je iets doet:
 2. Bestaat er een open PR of een `claude/*`-branch met nieuwer werk dan de standaardbranch? Bouw daarop voort
    (`git checkout -B <jouw sessiebranch> origin/<die branch>`) in plaats van opnieuw te beginnen.
 3. Heeft een andere branch alleen een Fase 1-document dat al in een spel-PR zit: negeer die, herhaal het niet.
-4. Is er een spel-PR open die wacht op Bram: begin geen nieuw spel (zie Grenzen). Stop stil.
+4. Een open spel-PR die op Bram wacht blokkeert niets: Bram wil meerdere spellen naast elkaar kunnen testen. Bouw gewoon
+   het volgende spel (zie Grenzen voor het maximum).
 5. Werk de state bij en commit die mee, zodat de volgende run het ziet.
 
 ## Status bijhouden
@@ -24,7 +25,7 @@ Elke run leest dit eerst, hervat en schrijft het bij elke commit bij. Nooit opni
 2. `npm test` en `npm run sim`. Rood: eerst repareren (aparte branch `engine/fix-<kort>`, PR), geen spel bouwen.
 3. Kies werk:
    - Er is een spel met phase < 5: hervat dat spel (branch `game/<slug>`).
-   - Alle spellen af (PR open of gemerged) en er zijn minder dan 2 open spel-PR's: start een nieuw spel, kies slug.
+   - Alle spellen af (PR open of gemerged) en er zijn minder dan 5 open spel-PR's: start een nieuw spel, kies slug.
    - Anders: niets doen en stil stoppen (geen notificatie).
 4. Werk door tot het spel klaar is of de run tegen zijn tijd/contextlimiet loopt. Commit klein en vaak, push naar
    `game/<slug>`, werk de state bij. Een volgende run hervat exact daar.
@@ -58,6 +59,11 @@ Elke run leest dit eerst, hervat en schrijft het bij elke commit bij. Nooit opni
   zijn, of een blokkade die Bram moet oplossen. Geen melding voor tussenstappen of "niets te doen".
 - Voeg na afloop een regel toe aan docs/lessen.md als er iets onverwachts gebeurde.
 
+## Overzicht voor Bram
+Elk spel krijgt `games/<slug>/meta.json` (`title`, `summary` in nl+en, `status`: `speltest-nodig` zodra het af is, `tags`).
+Daarmee verschijnt het automatisch op `/games` (`npm run serve`), waar Bram spellen kan starten, stoppen en wisselen.
+De test `test/overzicht.test.js` faalt als meta.json ontbreekt. Werk ook docs/spellen-overzicht.md bij.
+
 ## Grenzen
-- Maximaal 2 open spel-PR's tegelijk. Nooit pushen naar de standaardbranch of naar andermans branches.
+- Maximaal 5 open spel-PR's tegelijk; daarboven stil stoppen tot Bram er een heeft gemerged of gesloten. Elk spel krijgt een eigen PR. Nooit pushen naar de standaardbranch of naar andermans branches.
 - Geen klantspecifieke inhoud in code. Teksten via defaults.nl.json/defaults.en.json.

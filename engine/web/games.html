@@ -1,0 +1,39 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spellen</title>
+<style>:root{--bg:#fff;--fg:#111;--card:#f4f4f6;--acc:#0a6b6b}@media(prefers-color-scheme:dark){:root{--bg:#111;--fg:#eee;--card:#1d1d22;--acc:#4fd1c5}}
+body{margin:0;font:18px system-ui,sans-serif;background:var(--bg);color:var(--fg)}main{padding:24px;max-width:1100px;margin:auto}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px}.card.cur{outline:3px solid var(--acc)}
+.badge{font-size:14px;border:1px solid var(--acc);color:var(--acc);border-radius:99px;padding:2px 10px;align-self:flex-start}
+.tag{font-size:13px;opacity:.7}input,select,button{font:inherit;padding:8px}button{cursor:pointer}a{color:var(--acc)}small{opacity:.7}</style></head>
+<body><main><h1>Spellen</h1>
+<div class="bar"><label>Taal <select id="l"><option value="nl">Nederlands</option><option value="en">English</option></select></label>
+<label>Minuten <input id="m" type="number" value="40" min="20" max="60" style="width:5em"></label>
+<label>Bots <input id="b" type="number" value="0" min="0" max="60" style="width:5em"></label>
+<button id="stop">Stop huidige sessie</button></div>
+<p id="st"></p>
+<div class="grid" id="g"></div>
+<p><small>Links: <a href="/phone">telefoon</a> · <a href="/screen">groot scherm</a> · <a href="/dashboard">dashboard</a>. Start een spel, laat spelers joinen via /phone, en kies daarna een ander spel via Stop + Start.</small></p></main>
+<script src="/web/common.js"></script>
+<script>
+let games = [], cur = null;
+const lang = () => l.value;
+function draw() {
+  g.innerHTML = games.map((x) => `<div class="card ${cur?.slug === x.slug && cur.state === 'running' ? 'cur' : ''}">
+  <span class="badge">${esc(x.statusLabel)}</span><h2 style="margin:0">${esc(x.title[lang()] ?? x.title.nl)}</h2>
+  <div>${esc(x.summary[lang()] ?? x.summary.nl)}</div>
+  <div class="tag">${x.limits.minPlayers}–${x.limits.maxPlayers} spelers · ${x.limits.minTeams}–${x.limits.maxTeams} teams · 20–60 min · engine ${esc(x.engineVersion)}</div>
+  <div class="tag">${x.tags.map(esc).join(' · ')}</div>
+  <div><button data-s="${esc(x.slug)}">Start dit spel</button> <a href="/dashboard?game=${esc(x.slug)}">dashboard</a></div></div>`).join('');
+  g.querySelectorAll('button[data-s]').forEach((btn) => btn.onclick = async () => {
+    if (cur?.state === 'running') await post('/api/reset', {});
+    const r = await post('/api/start', { slug: btn.dataset.s, lang: lang(), durationMin: Number(m.value), bots: Number(b.value) });
+    st.textContent = r.error ?? ''; tick();
+  });
+}
+stop.onclick = async () => { await post('/api/reset', {}); tick(); };
+l.onchange = draw;
+async function tick() { const d = await api('/api/state'); const was = cur?.slug + cur?.state; cur = { slug: d.slug, state: d.state };
+  st.textContent = d.state === 'lobby' ? 'Geen spel actief.' : `Actief: ${d.slug} (${d.state}) · ${d.playersCount} spelers`; if (was !== cur.slug + cur.state) draw(); }
+api('/api/games').then((x) => { games = x; draw(); tick(); setInterval(tick, 2000); });
+</script></body></html>

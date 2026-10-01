@@ -5,11 +5,12 @@ Dit is een startpunt: Bram past de uitgangspunten aan; bij twijfel geldt dit doc
 
 ## Commando's
 - `npm test` — unit-, engine- en simulatietests (Node 20+, geen dependencies)
+- `npm run serve` — livelaag; spellenoverzicht op /games, telefoon /phone, groot scherm /screen, dashboard /dashboard
 - `npm run sim [slug]` — bot-simulatie van een spel (standaard: demo)
 
 ## Structuur
 - `engine/` — sessie, klok, scoring/leaderboard, AI-laag, i18n, bots, simulatie. Engine-versie in `engine/version.js`.
-- `games/<slug>/` — plug-in: `index.js`, `defaults.nl.json`, `defaults.en.json`, `fixtures/`, `DESIGN.md`, `README.md`, `BEGELEIDER.md`
+- `games/<slug>/` — plug-in: `index.js`, `meta.json` (titel/samenvatting/status voor het overzicht op `/games`), `defaults.nl.json`, `defaults.en.json`, `fixtures/`, `DESIGN.md`, `README.md`, `BEGELEIDER.md`
 - `packs/<naam>/pack.json` — klantpakket (alle klantspecifieke inhoud)
 - `docs/` — lessen, spellenoverzicht, engine-API
 

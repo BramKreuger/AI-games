@@ -127,3 +127,22 @@ test('moderatie in de browser: ongepast antwoord van telefoon bereikt het scherm
     assert.ok(!text.includes('fuck'));
   } finally { await browser.close(); await srv.close(); }
 });
+
+test('spellenoverzicht: alle spellen zichtbaar, starten en wisselen', async () => {
+  const { srv, base } = await setup();
+  const browser = await launch();
+  try {
+    const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+    await page.goto(`${base}/games`); await page.waitForSelector('.card');
+    const titles = await page.locator('.card h2').allTextContents();
+    assert.ok(titles.length >= 3 && titles.includes('Levend Beeld'));
+    await page.fill('#b', '8'); await page.fill('#m', '20');
+    await page.click('button[data-s="stille-post"]');
+    await until(async () => (await (await fetch(`${base}/api/state`)).json()).slug === 'stille-post');
+    await page.click('button[data-s="demo"]');            // wisselen: stopt het lopende spel en start een ander
+    await until(async () => (await (await fetch(`${base}/api/state`)).json()).slug === 'demo');
+    await page.selectOption('#l', 'en');
+    assert.ok((await page.locator('.card h2').allTextContents()).includes('Living Picture'));
+    if (process.env.SHOT) await page.screenshot({ path: process.env.SHOT });
+  } finally { await browser.close(); await srv.close(); }
+});

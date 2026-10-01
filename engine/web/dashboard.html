@@ -1,14 +1,16 @@
 <!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard</title>
 <style>:root{--bg:#fff;--fg:#111}@media(prefers-color-scheme:dark){:root{--bg:#111;--fg:#eee}}body{margin:0;font:18px system-ui,sans-serif;background:var(--bg);color:var(--fg)}main{padding:24px;max-width:1200px;margin:auto}
 input,select,button{font:inherit;padding:8px;margin:4px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #8884;padding:4px 8px;text-align:left}.off{color:#c33}.on{color:#2a2}</style></head>
-<body><main><h1>Dashboard</h1><form id="f"><select id="g"><option>levend-beeld</option><option>stille-post</option></select>
+<body><main><h1>Dashboard</h1><form id="f"><a href="/games">Alle spellen</a> <select id="g"></select>
 <select id="l"><option value="nl">Nederlands</option><option value="en">English</option></select>
-<input id="m" type="number" value="40" min="20" max="60" aria-label="minuten"><input id="b" type="number" value="0" min="0" max="60" aria-label="bots"><button>Start</button></form>
+<input id="m" type="number" value="40" min="20" max="60" aria-label="minuten"><input id="b" type="number" value="0" min="0" max="60" aria-label="bots"><button>Start</button><button type="button" id="stop">Stop sessie</button></form>
 <p id="st"></p><h2>Spelers</h2><table id="pl"></table><h2>Stand</h2><table id="tot"></table><h2>Regels</h2><table id="en"></table>
 <form id="c"><input id="ce" placeholder="regel-id"><input id="cd" type="number" placeholder="punten"><input id="cr" placeholder="reden"><button>Corrigeer</button></form></main>
 <script src="/web/common.js"></script>
 <script>
 document.getElementById('f').onsubmit = async (e) => { e.preventDefault(); const r = await post('/api/start', { slug: g.value, lang: l.value, durationMin: Number(m.value), bots: Number(b.value) }); if (r.error) st.textContent = r.error; };
+api('/api/games').then((gs) => { g.innerHTML = gs.map((x) => `<option value="${esc(x.slug)}">${esc(x.title.nl)}</option>`).join(''); const q = new URLSearchParams(location.search).get('game'); if (q) g.value = q; });
+stop.onclick = () => post('/api/reset', {});
 document.getElementById('c').onsubmit = async (e) => { e.preventDefault(); await post('/api/correct', { entryId: ce.value, delta: Number(cd.value), reason: cr.value }); };
 async function tick() { const d = await api('/api/dashboard');
   st.textContent = `${d.state}${d.error ? ' — ' + d.error : ''}${d.valid === null ? '' : d.valid ? ' — export geldig' : ' — export ONGELDIG'}`;

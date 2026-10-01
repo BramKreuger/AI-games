@@ -1,0 +1,3 @@
+{ "title": { "nl": "Stille Post Live", "en": "Live Whisper Chain" },
+  "summary": { "nl": "Een zin gaat fluisterend door een keten van spelers; de AI meet per schakel hoeveel de betekenis verschuift.", "en": "A sentence is whispered along a chain of players; the AI measures how far the meaning drifts at each link." },
+  "status": "speltest-nodig", "tags": ["spraak", "fysiek", "embeddings"] }

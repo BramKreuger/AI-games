@@ -1,0 +1,3 @@
+{ "title": { "nl": "Demo: Prompt-duel", "en": "Demo: Prompt duel" },
+  "summary": { "nl": "Teams schrijven een opdracht, de AI beoordeelt, teams stemmen op elkaar. Referentiespel voor de engine.", "en": "Teams write an instruction, the AI rates it, teams vote on each other. Reference game for the engine." },
+  "status": "referentie", "tags": ["referentie"] }
