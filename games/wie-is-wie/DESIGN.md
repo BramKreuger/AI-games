@@ -3,6 +3,7 @@
 Slug `wie-is-wie` · engine `^1.2.0` (nieuw: beeldstap, achterwaarts compatibel, zie §7) · talen: Nederlands en Engels
 (standaard `nl`, `lang`; teksten in `defaults.nl.json` / `defaults.en.json`, overschrijfbaar per pakket).
 Versie 2 (2026-10-01), na overleg met Bram: één interview aan het begin, vragensets verdeeld over rondes, punten alleen voor raden.
+Versie 2.1 (bouw en tests): zie §15 voor wat er tijdens bouwen, testen en de rooktest is veranderd.
 
 ## 1. Uitleg voor de presentator (≤250 woorden)
 "Vandaag leer je mensen kennen die je nog niet kent, en daarna moet je raden wie wie is.
@@ -45,7 +46,7 @@ teamplaatje bij welk team hoort, dubbele punten. De uitslag laat per team zien w
 | results | 1 | 2 | 3 | 1 | uitslag + uitleg |
 
 Het aantal sets `K` wordt bij de start vastgelegd: `K` = aantal rondes dat de planner toelaat, en ten hoogste
-`ceil(spelers / minPerRound)` (`minPerRound` 4, anders zijn rondes te klein). Per set maximaal `galleryMax` (12) plaatjes; meer
+`floor(spelers / minPerRound)` (`minPerRound` 4, anders zijn rondes te klein), maximaal `maxRounds` (5). Per set maximaal `galleryMax` (12) plaatjes; meer
 plaatjes dan `K × galleryMax` gaan naar de muur (alleen onthulling, geen punten).
 Verwachte planner-uitkomst (te meten in fase 4): **20 min** = intro 2, interview 4, prompt 2, 2 rondes × 4, finale 3, results 1 (20);
 **40 min** = intro 3, interview 5, prompt 3, 3 rondes × 6, muur 1, finale 5, results 2 (37);
@@ -184,3 +185,13 @@ leiden. Klantinhoud nooit in code.
 
 **AI-kosten per sessie (schatting, nog niet gemeten)**: 50 spelers: 50 plaatjes + ±10 herkansingen + 12 teamplaatjes ≈ 72 beelden ×
 $0,02-0,04 ≈ **$1,5-3**; checks, commentaar en moderatie ≈ $0,3. 12 spelers ≈ **$0,5**.
+
+## 15. Gebouwd (versie 2.1): afwijkingen en metingen
+- **Tijdscript zoals gebouwd** (`npm run sim wie-is-wie`): intro 1-3, interview 4-6 (met *klaar*-knop), prompt 3-5 (typen 90 s + herkansing 45 s + AI), rondes 4-8, muur 1-2 (prioriteit 6: valt als eerste weg, dan toont de uitslag de muur), finale 3-7, uitslag 1-3.
+  20 min = 2 rondes · 40 min = 3-5 rondes · 60 min = 5 rondes (bij 24+ spelers). Kleine groepen (6-7) krijgen 1 ronde; het spel duurt dan ±25-35 min.
+- **Kandidaten koppelen niet** in hun eigen ronde (zij staan in de schijnwerper). Omdat partners dezelfde set hebben, zijn alle makers van een ronde ook kandidaat: een speurder koppelt dus nooit zijn eigen plaatje of zichzelf (getest). Teams zonder speurders in een ronde krijgen aan het eind het gemiddelde van hun andere rondes (gedeclareerd, met reden).
+- **Kleurpalet per plaatje** (nieuw, risico R1): binnen een ronde verschillend, net als het onderwerp; uit `wieIsWie.palettes` in het pakket.
+- **Lekcontrole**: AI + woordenlijst; een lekwoord telt alleen als het echt in de prompt staat. Na de herkansing haalt het spel resterende lekwoorden weg.
+- **Time-outs per stap**: check 8 s, embeddings 5 s, commentaar 8 s, samenvoegen 10 s, beeld 30 s. Worst case (alles time-out) past in 20 min (getest).
+- **Instellingen zoals gebouwd**: `galleryMax` 12 · `minPerRound` 4 · `maxRounds` 5 · `interviewSec` 300 · `promptSecMax` 90 · `maxAttempts` 2 · `searchSec` 210 · `matchSec` 60 · `maxSimilarity` 0,85 · `revealSec` 8 · `aiTimeoutSec` 30 · `imageConcurrency` 8 · `finaleMultiplier` 2 · `aiBudgetUsd` 15 · `botSkill` 0,55 (alleen bots).
+- **Rooktest echte AI** (OpenAI, `gpt-image-1-mini` low, `gpt-4.1-mini`, `text-embedding-3-small`): 8 spelers $0,12, 12 spelers $0,18, 50 spelers $0,67 (60 beelden, gemiddeld 8,4 s, max 11,9 s; alle AI-tijd samen 118 s). Geen terugvallen. Kosten blijven ruim onder de schatting in §14.

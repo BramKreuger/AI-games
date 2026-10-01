@@ -173,10 +173,18 @@ export default {
     const input = { prompt, partner: pt.subjectName, team: this.teamName(ctx, pt.subjectTeam), banned: loc(cfg.bannedWords, ctx.lang) ?? [], generic: loc(cfg.genericWords, ctx.lang) ?? [] };
     return ctx.ai.call({
       id: 'check', kind: 'text', input, timeoutSec: 8,
-      llm: { system: `You check a prompt for an image generator in a party game. The prompt must describe a real person only as a metaphor (${pt.theme}), based on an interview. Answer JSON {"leak": boolean, "words": string[], "generic": boolean}. leak = true if the prompt contains the person's name, team, physical appearance (hair, glasses, height, body, clothing, skin, age, gender) or job title; list those words. generic = true if the prompt is so vague it would fit almost anyone (e.g. "likes travelling and good food").`, user: JSON.stringify({ prompt, name: input.partner, team: input.team }) },
+      llm: { system: `You check a prompt for an image generator in a party game. The prompt must describe a real person only as a metaphor (${pt.theme}), based on an interview. Answer JSON {"leak": boolean, "words": string[], "generic": boolean}.
+leak = true only if the prompt text itself literally contains the person's name, the team name, a physical appearance detail (hair, glasses, height, body, clothing, skin, age, gender) or a job title; "words" lists those exact words as they appear in the prompt. Do not flag names that are not in the prompt.
+generic = true only if the prompt has no concrete, specific detail at all and would fit almost anyone (e.g. "a happy animal", "likes travelling and good food"). One specific detail (an object, habit, place, story) is enough for generic = false. When in doubt, generic = false.`, user: JSON.stringify({ prompt, name: input.partner, team: input.team }) },
       fixture: (i) => localCheck(i.prompt, i),
       validate: (o) => typeof o?.leak === 'boolean' && typeof o?.generic === 'boolean',
       fallback: (i) => ({ ...localCheck(i.prompt, i), generic: false }),
+    }).then((r) => {
+      // Alleen woorden die echt in de prompt staan tellen als lek (regressie: model noemde de naam zonder dat die er stond);
+      // de lokale controle blijft altijd gelden.
+      const local = localCheck(prompt, input), raw = String(prompt).toLowerCase();
+      const words = [...new Set([...(r.output.words ?? []).filter((w) => w && raw.includes(String(w).toLowerCase())), ...local.words])];
+      return { ...r, output: { ...r.output, leak: words.length > 0, words } };
     });
   },
 

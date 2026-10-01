@@ -179,3 +179,15 @@ test('wie-is-wie: regressie R1 (rooktest): kleurpalet verschilt per plaatje binn
   assert.ok(W.portraits.every((p) => seen.some((x) => x.includes(p.palette))));
   assert.ok(!seen.some((x) => /warm licht/.test(x)));
 });
+
+test('wie-is-wie: regressie (rooktest): lekwoorden die niet in de prompt staan tellen niet; lokale lekken altijd', async () => {
+  const { loadPack } = await import('../engine/sim-generic.js');
+  const ai = createAI({ mode: 'live', clock: createClock(0), provider: async () => ({ leak: true, words: ['Sanne', 'Blauw'], generic: false }) });
+  const ctx = { ai, lang: 'nl', pack: loadPack(), teams: [{ id: 'T1', name: 'Blauw' }] };
+  const pt = { theme: 'een gerecht', subjectName: 'Sanne', subjectTeam: 'T1' };
+  const a = await game.check(ctx, pt, 'een gerecht dat op zondag tegen de tomaten praat');
+  assert.equal(a.output.leak, false); assert.deepEqual(a.output.words, []);
+  const ai2 = createAI({ mode: 'live', clock: createClock(0), provider: async () => ({ leak: false, words: [], generic: false }) });
+  const b = await game.check({ ...ctx, ai: ai2 }, pt, 'een gerecht met blonde krullen');
+  assert.equal(b.output.leak, true);
+});
