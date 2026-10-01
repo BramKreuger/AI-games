@@ -1,0 +1,16 @@
+{
+  "title": {
+    "nl": "Geheime Regel",
+    "en": "Secret Rule"
+  },
+  "summary": {
+    "nl": "Teams raden een geheime regel over hun groepsfoto: de AI zegt per experiment alleen 'klopt' of 'klopt niet'.",
+    "en": "Teams deduce a secret rule about their group photo: per experiment the AI only says 'holds' or 'does not hold'."
+  },
+  "status": "speltest-nodig",
+  "tags": [
+    "vision",
+    "fysiek",
+    "deductie"
+  ]
+}
