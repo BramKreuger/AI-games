@@ -1,106 +1,186 @@
 # Wie is Wie: ontwerp
 
-Slug `wie-is-wie` · engine `^1.2.0` (nieuw: beeldstap, zie §7) · talen: Nederlands en Engels (standaard `nl`, `lang`; teksten in `defaults.nl.json` / `defaults.en.json`, overschrijfbaar per pakket).
+Slug `wie-is-wie` · engine `^1.2.0` (nieuw: beeldstap, achterwaarts compatibel, zie §7) · talen: Nederlands en Engels
+(standaard `nl`, `lang`; teksten in `defaults.nl.json` / `defaults.en.json`, overschrijfbaar per pakket).
+Versie 2 (2026-10-01), na overleg met Bram: één interview aan het begin, vragensets verdeeld over rondes, punten alleen voor raden.
 
 ## 1. Uitleg voor de presentator (≤250 woorden)
-"Jullie gaan iemand van een ander team leren kennen, en daarna moet de zaal raden wie wie is. Je vormt een tweetal met iemand uit een ander team. Jullie interviewen elkaar, aan de hand van vragen op de telefoon. Daarna schrijf je een prompt waarmee de AI een plaatje van je gesprekspartner maakt, als metafoor: een dier, een weertype, een plek. Geen naam, geen uiterlijk, geen functie. Een slimme prompt verklapt precies genoeg.
-Dan komen de plaatjes genummerd op het grote scherm, met een paar mensen in de schijnwerper. Loop rond, praat met de mensen in de schijnwerper, en koppel elk plaatje aan een persoon. Let op: wie in de schijnwerper staat mag één keer liegen!
-Raden levert punten op. Het maken van een plaatje levert de meeste punten op als ongeveer de helft het goed raadt: te makkelijk of te vaag levert weinig op.
-Elke ronde heeft een twist: eerst vrij, dan met een woordlimiet, dan met een nieuw tweetal en soms met een nepplaatje dat bij niemand hoort. Wie niet wil of kan bewegen, kiest een eigen rol, zoals alter ego, schrijver of speurder op afstand. Niemand valt af.
-Aan het eind maken alle teams samen één plaatje van de hele zaal: elk team levert een woord, de AI maakt het beeld, en iedereen raadt welk team welk woord gaf. De uitslag laat per team zien waarom het die punten kreeg."
+"Vandaag leer je mensen kennen die je nog niet kent, en daarna moet je raden wie wie is.
+Eerst zoek je een partner uit een ander team. Op je telefoon staan drie vragen. Jullie interviewen elkaar: vraag door, zoek
+het verhaal achter het antwoord.
+Dan schrijf je een prompt en maakt de AI een plaatje van je partner, maar dan als metafoor: als dier, als gerecht, als plek.
+Je telefoon zegt welke. Geen naam, geen uiterlijk, geen functie. De AI controleert dat.
+Daarna spelen we rondes. Elke ronde komt een groepje plaatjes op het grote scherm, met de vragen die bij die plaatjes hoorden.
+De mensen die op die plaatjes staan, krijgen een naambadge op hun telefoon en houden die omhoog. Loop rond, stel elke kandidaat
+één van de vragen, en koppel op je telefoon elk plaatje aan een naam. Daarna onthullen we wie wie was.
+Weet je het antwoord omdat het jouw plaatje is of jij erop staat? Dan sla je dat plaatje over: dat regelt je telefoon. En verklap
+niets, want het is een wedstrijd tussen teams.
+Je verdient punten met goed raden: elke juiste koppeling telt.
+In de finale maakt de AI van elk team één teamplaatje, uit de plaatjes die anderen van jullie maakten. Iedereen raadt welk
+teamplaatje bij welk team hoort, dubbele punten. De uitslag laat per team zien waar elk punt vandaan kwam."
 
-## 2. Tijdscript (minuten: min / doel / max, prioriteit 1 = nooit schrappen)
+## 2. Spelverloop in één oogopslag
+1. **Intro** (3 min): uitleg, tweetallen verschijnen op de telefoons.
+2. **Interview** (5 min, één keer): tweetallen over de teams heen interviewen elkaar met de drie vragen van hun set.
+3. **Prompten** (3 min): iedereen schrijft één prompt over zijn partner, met het eigen metafoor-onderwerp. Lek- en
+   gelijkeniscontrole, AI maakt het plaatje. Set A eerst, de rest tijdens ronde 1.
+4. **Rondes** (±6 min per set): tonen, zoeken, koppelen, onthullen. Eén ronde per vragenset.
+5. **De muur** (1-2 min): plaatjes die geen ronde kregen (bij veel spelers of weinig tijd) komen met naam op het scherm.
+6. **Finale: teamportretten** (5 min): de AI maakt per team één plaatje uit de prompts over zijn leden; iedereen koppelt teamplaatjes aan teams.
+7. **Uitslag** (2 min): ranglijst met redenen.
+
+## 3. Tijdscript (minuten: min / doel / max, prioriteit 1 = nooit schrappen)
 | Blok | Min | Doel | Max | Prio | Inhoud |
 |---|---|---|---|---|---|
-| intro | 2 | 3 | 4 | 1 | uitleg, tweetallen vormen, alter-ego-keuze |
-| r1 Metafoor | 11 | 13 | 16 | 1 | vrije prompt, "als jij een dier/weertype/plek was" |
-| r2 Verbod | 11 | 13 | 16 | 2 | max. 8 woorden, verboden woorden (hobby's, beroep) |
-| r3 Wissel | 10 | 12 | 15 | 3 | nieuw tweetal, thema "over 10 jaar" of "op je best/slechtste dag" |
-| r4 Schaduw | 10 | 12 | 15 | 4 | één nepplaatje bij niemand; "niemand" is een geldig antwoord |
-| finale | 5 | 6 | 8 | 1 | Het Grote Portret voor iedereen |
-| results | 1 | 2 | 3 | 1 | uitslag + uitleg per team |
+| intro | 2 | 3 | 4 | 1 | uitleg, tweetallen |
+| interview | 4 | 5 | 6 | 1 | één keer, per tweetal één vragenset |
+| prompt | 2 | 3 | 4 | 1 | prompt, controles, beeldgeneratie set A |
+| ronde 1 | 4 | 6 | 8 | 1 | set A |
+| ronde 2 | 4 | 6 | 8 | 2 | set B |
+| ronde 3 | 4 | 6 | 8 | 3 | set C |
+| ronde 4 | 4 | 6 | 8 | 4 | set D (alleen bij veel spelers en ≥ 50 min) |
+| ronde 5 | 4 | 6 | 8 | 5 | set E (idem) |
+| muur | 1 | 1 | 2 | 2 | overgebleven plaatjes met naam |
+| finale | 3 | 5 | 7 | 1 | teamportretten |
+| results | 1 | 2 | 3 | 1 | uitslag + uitleg |
 
-Planner-uitkomst (te meten met `npm run sim wie-is-wie` in fase 4): **20 min** = intro 2, r1 11, finale 5, results 1 (19); **40 min** = intro 2, r1 11, r2 11, r3 10 (alle op minimum), finale 5, results 1 (40); of r3 valt weg en r1/r2 lopen op naar doelwaarde; **60 min** = intro 3, r1–r4 op doelwaarde (50) en finale 6, results 2 (61: r4 krimpt tot 11).
+Het aantal sets `K` wordt bij de start vastgelegd: `K` = aantal rondes dat de planner toelaat, en ten hoogste
+`ceil(spelers / minPerRound)` (`minPerRound` 4, anders zijn rondes te klein). Per set maximaal `galleryMax` (12) plaatjes; meer
+plaatjes dan `K × galleryMax` gaan naar de muur (alleen onthulling, geen punten).
+Verwachte planner-uitkomst (te meten in fase 4): **20 min** = intro 2, interview 4, prompt 2, 2 rondes × 4, finale 3, results 1 (20);
+**40 min** = intro 3, interview 5, prompt 3, 3 rondes × 6, muur 1, finale 5, results 2 (37);
+**60 min** = intro 3, interview 5, prompt 3, 5 rondes × 7, muur 1, finale 6, results 2 (55-60).
+Bij 50 spelers en 20 min: 2 sets × 12 = 24 plaatjes in rondes, 26 op de muur. Bij 40 min: 3 × 12 = 36, 14 op de muur. Bij 60 min: 5 × 10 = alle 50.
 
-Rondeverloop (±13 min): koppeling tonen 0:30 · interview (beiden om de beurt) 4:00 · prompt schrijven 2:00 (≤ `maxPromptWords`) · AI maakt beeld 0:15-0:30 (wachttijd) · veto/controle door doelwit 0:30 · zoeken en koppelen 3:30 (invoer 1:00) · onthulling 2:00.
+Ronde (±6 min): scherm toont plaatjes + de drie vragen van de set 0:20 · zoeken en vragen 3:30 · koppelen op de telefoon 1:00
+(kan tijdens het zoeken) · onthulling 1:00 (plaatje, naam, prompt, hoeveel spelers het goed hadden).
 
-## 3. Ondersteunde grenzen
-4-60 deelnemers, 2-12 teams (engine dwingt af), teamgrootte 1-10, ideaal 2-5. Weinig teams (2-3): tweetallen tussen twee teams, de galerij blijft klein (≤ spelers). Veel spelers (50): iedere ronde schrijven alle spelers een prompt en maakt de AI alle beelden, maar de **schijnwerper** toont er maar `gallerySize` (8, tot 12), eerlijk verdeeld over de teams (geen team twee keer voor iedereen eenmaal). De niet-getoonde beelden komen in een latere ronde of als reserve in de finale; spelers zonder getoond beeld zijn die ronde speurder. Oneven spelers: één driehoek A→B→C→A (alle drie verschillende teams als het kan). Eén team dat meer dan de helft van de spelers heeft: tweetallen binnen dat team kunnen niet gescheiden worden; dan mag het tweetal uit hetzelfde team komen (gelogd, reden "geen andere tegenpartij").
+## 4. Ondersteunde grenzen
+6-60 deelnemers, 2-12 teams, teamgrootte 1-10 (ideaal 2-5).
+- **Tweetallen**: altijd met iemand van een ander team (koppelalgoritme: sorteer spelers per team, verschuif de lijst met
+  ≥ grootste teamgrootte; daarna wederzijds koppelen). Oneven aantal: één drietal A→B→C→A (drie verschillende teams als het kan).
+  Eén team met meer dan de helft van de spelers: dan blijven er tweetallen binnen dat team over; toegestaan, gelogd ("geen andere tegenpartij").
+- **Sets verdelen**: beide partners van een tweetal krijgen dezelfde set (ze stellen elkaar dezelfde vragen), dus hun twee plaatjes
+  staan in dezelfde ronde. Sets worden zo verdeeld dat elk team per ronde ongeveer evenveel kandidaten heeft.
+- **Weinig spelers (6-8)**: 2 sets van 3-4 plaatjes; rondes korter (planner).
+- **Veel spelers (50-60)**: `galleryMax` 12 houdt het koppelen overzichtelijk (één lijst van ≤ 12 namen); meer rondes of de muur.
 
-## 4. Rollen
-Iedereen is in een ronde tegelijk **Interviewer** (stelt de vragen, schrijft de prompt) en **Doelwit** (beantwoordt, wordt getoond). Daarnaast, per ronde, afhankelijk van de schijnwerper:
-- **Kandidaat**: doelwit van een getoond beeld; staat in de schijnwerper, beantwoordt vragen van speurders, mag één keer liegen.
-- **Stille getuige**: maker van een getoond beeld; weet het antwoord, mag niets verklappen (ook niet non-verbaal), scoort op de sweet spot.
-- **Speurder**: alle anderen; koppelen beelden aan kandidaten (niet het eigen beeld en niet het eigen doelwit).
-| Teamgrootte | Rolverdeling |
+## 5. Rollen
+Iedereen is één keer **interviewer** en **geïnterviewde** (in het tweetal) en **prompter** (schrijft het plaatje van de partner).
+Per ronde:
+- **Kandidaat**: staat op een plaatje van deze ronde. Telefoon toont een naambadge (naam + teamkleur, groot); houdt die omhoog
+  en blijft op zijn plek. Beantwoordt per speurder één vraag uit de set van deze ronde, eerlijk en in één of twee zinnen.
+  Kandidaten koppelen zelf ook (behalve hun eigen plaatje en dat van hun partner) op basis van wat ze om zich heen horen; hun
+  rondescore telt mee, maar hun gemiddelde wordt berekend over de rondes waarin ze speurder waren (zie §10).
+- **Speurder**: alle anderen. Lopen rond, vragen, koppelen.
+| Teamgrootte | Toelichting |
 |---|---|
-| 1 | speler is steeds met een speler van een ander team in een tweetal |
-| 2-3 | elk lid heeft een eigen tweetal met een ander team; iedereen is interviewer, doelwit en speurder |
-| 4-5+ | idem; het team kiest per ronde één **teamwoordvoerder** voor de invoer van de koppelingen (teamscore blijft per lid) |
+| 1 | speelt zelfstandig; tweetal met een ander team zoals iedereen |
+| 2-5 | elk lid zit in een eigen tweetal met iemand van een ander team; het team overlegt tijdens het zoeken (mag, binnen het team) |
+| 6-10 | idem; teams zijn groot, dus meer leden per ronde kandidaat |
 
-Rouleren: elke ronde nieuwe tweetallen (r3: bewust een nieuw tweetal), nieuwe schijnwerper-selectie, nieuwe rol. Een speler wordt niet twee rondes achter elkaar kandidaat als dat vermijdbaar is.
+Rouleren: de rol kandidaat/speurder wisselt per ronde vanzelf (ieder is in precies één ronde kandidaat).
+**Inclusie**: wie niet kan of wil lopen, is speurder op zijn plek: kandidaten komen niet naar hem toe, maar teamgenoten brengen
+antwoorden mee (overleg binnen het team mag), en het koppelen gaat op de telefoon. Als kandidaat blijft iedereen sowieso op zijn
+plek. Wie niet wil praten, kan de interviewvragen schriftelijk beantwoorden op de telefoon (partner leest mee).
 
-**Inclusie.** Wie niet kan of wil bewegen (`optOut`): (a) is **kandidaat** op een vaste plek (speurders komen naar hem/haar); (b) kan **alter ego** kiezen (interview als verzonnen personage, het beeld hoort bij die persoon); (c) heeft de rol **Schrijver** (typt de prompt voor een ander tweetal, als partner dat wil) of **Speurder op afstand** (via de telefoon vragen stellen via een korte chat met een kandidaat, 3 vragen per ronde). Wie niet wil praten of interviewen: **alleen-schrijven**, met schriftelijke antwoorden op de interviewkaarten. Doelwitten hebben altijd een **veto**: ze zien hun beeld eerst op de telefoon en kunnen "niet tonen" kiezen; dan wordt een stockbeeld uit het pakket of een nieuwe poging gebruikt, zonder strafpunten voor de maker.
-
-## 5. Fysieke opdracht en schermtijd per ronde
-Fysiek: lopen naar een ander team, face-to-face interview, daarna in de zaal zoeken naar de kandidaten en gesprekken voeren. Telefoon: vragenkaart lezen (±10 s), prompt typen of dicteren (≤ 120 s, `promptSecMax`), veto (±15 s), koppelingen invoeren (≈ 60 s) = ≈ 3,5 min van 13 min ≈ **27%**. Dat is te krap: daarom `promptSecMax` 90, spraakinvoer en een invoerscherm met 1 tik per koppeling; doel ≈ 3 min = **23%** (< 25%). Gemeten in fase 4 (`phoneShare < 0.25`), bij overschrijding: promptlimiet omlaag of invoer korter.
-
-## 6. Interactie tussen teams
-Tweetallen zijn altijd cross-team (tenzij onmogelijk, zie §3). De speurders mengen in de zaal; kandidaten worden door spelers van alle teams ondervraagd. Teams zijn tegelijk maker, doelwit-team en speurder.
+## 6. Fysieke opdracht en schermtijd
+Fysiek: lopen naar je partner, face-to-face interview, per ronde rondlopen en kandidaten aanspreken.
+Telefoon (hele spel, 40 min): vragen lezen 0:20, prompt typen/dicteren ≤ 1:30, per ronde koppelen ≈ 1:00 (3 ×), finale koppelen 0:45
+≈ **5,5 min van 40 = 14%** (< 25%). Per ronde: 1:00 van 6:00 = 17%. Gemeten in fase 4 (`phoneShare < 0.25`).
 
 ## 7. AI-stappen
 | Stap | Invoer | Model | Uitvoer | Latency | Terugval |
 |---|---|---|---|---|---|
-| `leak-check` | prompt + doelwit-naam/bijnaam + verboden woorden uit het pakket | tekst-LLM | `{ok, reasons[]}` (verklapt de prompt naam, uiterlijk, functie of team?) | 2-3 s | woordenlijst/regex uit het pakket (nl+en); bij twijfel doorlaten met waarschuwing |
-| `portrait` | prompt + stijl uit pakket + veiligheidssuffix ("geen gezichten of herkenbare personen") | beeldmodel (laag/medium, ≤512 px) | afbeelding | 8-25 s | stockbeeld uit pakket, gekozen op embedding-nabijheid van de prompt |
-| `crowd` (finale) | de teamwoorden (embedding-clusters, verwijder geblokkeerde) | beeldmodel | afbeelding | 10-25 s | stockbeeld "samen" uit pakket |
-| `shadow` (r4) | thema + stijl | tekst-LLM + beeldmodel | fictief persona-profiel + afbeelding | 10-25 s | schaduwbeeld uit pakket |
-| `commentary` | prompt (en bij onthulling de naam) | tekst-LLM | één grappige zin per onthulling | 2-3 s | vaste zin per ronde uit defaults |
-| moderatie | prompt, beeld, tekst voor het scherm | moderatie-API + blocklist | ok/blokkeren | <1 s | blocklist lokaal; beeld met vlag wordt vervangen door stockbeeld |
-Engine-uitbreiding (achterwaarts compatibel, engine 1.2): `ctx.ai.call({ kind: 'image', ... })` met dezelfde regels voor fixture, validatie, terugval, moderatie en `screen`. Mock-fixtures: deterministische SVG/PNG-placeholders per prompt-hash (`fixtures/portrait-*.svg`). Validatie: lege/ongeldige afbeelding of lek in de prompt → terugval. Time-out `aiTimeoutSec` (25 s). Alle calls van een ronde lopen in parallelle banen (`ai.batch`), dus de AI-tijd per ronde blijft ≈ de traagste baan (≤ 30 s) ook bij 50 spelers.
+| `check` | prompt + bijnaam partner + verboden woorden (pakket) | tekst-LLM | `{leak, generic, tip}`: verklapt de prompt naam/uiterlijk/functie/team? is hij te algemeen ("houdt van reizen")? | 2-3 s | woordenlijst/regex (pakket, nl+en) voor lek; geen algemeenheidscheck |
+| `similar` | prompt + andere prompts in dezelfde set | embeddings (cosinus) | `{maxSim, closestId}` | < 1 s | lokale embeddings (`engine/embed.js`) |
+| `portrait` | prompt + metafoor-onderwerp + sessiestijl (pakket) + veiligheidssuffix ("geen gezichten, geen tekst, geen echte personen") | beeldmodel | afbeelding | 8-25 s | stockbeeld van het onderwerp uit het pakket (bijv. "vos"); anders neutraal kaartje met het onderwerp |
+| `teamPortrait` (finale) | de prompts over de leden van één team | tekst-LLM (samenvoegen tot één prompt) + beeldmodel | afbeelding | 10-30 s | samenvoegen lokaal (eerste zin van elke prompt); beeld: stockbeeld "team" uit pakket |
+| `commentary` | prompt + naam (pas bij onthulling) | tekst-LLM | één korte, vriendelijke zin per onthulling | 2-3 s | vaste zin uit defaults |
+| moderatie | prompt, beeld, schermtekst | moderatie-API + blocklist | ok/blokkeren | < 1 s | blocklist lokaal; beeld met vlag → stockbeeld |
+
+Engine 1.2 (achterwaarts compatibel): `ctx.ai.call({ kind: 'image', ... })` met dezelfde regels als tekststappen (fixture, validatie,
+terugval, `screen`, moderatie), plus een `concurrency`-limiet voor beeldcalls (standaard 8) zodat 50 beelden in golven gaan zonder
+providerlimiet te raken. Mock-fixtures: deterministische SVG-plaatjes per onderwerp + prompt-hash (`fixtures/`). Validatie: lege of
+onleesbare afbeelding, of lek → terugval. Time-out `aiTimeoutSec` (30 s). Volgorde: set A eerst (moet klaar zijn bij ronde 1), sets B…
+tijdens ronde 1.
 
 ## 8. Wachttijd tijdens AI-stap
-Tweetal poseert als het dier/weertype dat het net bedacht heeft ("maak het geluid"); het grote scherm toont een tikkende teller en de commentator leest vragenkaarten voor als opwarmer voor het raden.
+Na het versturen van de prompt: het tweetal vertelt elkaar welk plaatje ze verwachten ("ik heb van jou een ... gemaakt, raad eens
+waarom"). Dit is de enige keer dat je je eigen plaatje-idee mag delen, alleen met je partner. Het grote scherm toont een teller
+"x van y plaatjes klaar". Set A is bij 12 plaatjes en concurrency 8 binnen ±50 s klaar.
 
 ## 9. Gezamenlijk moment op het grote scherm
-Galerij met genummerde beelden en de namen van de kandidaten in kleurcode (≥ 32 px). Onthulling beeld voor beeld: wie het is, de prompt van de maker, het aantal goede koppelingen en de AI-commentaar. Beelden gaan pas na moderatie en doelwit-veto naar het scherm; namen zijn de zelfgekozen bijnamen.
+Per ronde: galerij met genummerde plaatjes, onder elk plaatje het metafoor-onderwerp ("een gerecht"), bovenaan de drie vragen van de
+set (≥ 32 px). Onthulling plaatje voor plaatje: naam, prompt van de maker, "7 van 19 hadden het goed", AI-zin. Muur: alle overige
+plaatjes met naam. Finale: teamportretten genummerd, daarna onthulling per team. Alleen gemodereerde beelden; bijnamen in plaats van
+volledige namen als het pakket dat zegt.
 
-## 10. Scoring
-- **Raden**: per goede koppeling 2 punten voor de speurder (reden: "juist gekoppeld: beeld 4 → Sanne"). Rondescore per speler = `2 × juist / aantal te koppelen`, dus 0-2, ook bij verschillende gallerygroottes. Teamscore = gemiddelde over de leden (vergelijkbaar bij verschillende teamgroottes).
-- **Maken**: Dixit-sweet spot. Voor een getoond beeld met `n` speurders en aandeel goed `r`: `round(8 · r · (1 − r))` → 0-2 (2 bij `r` = 0,5). Reden: "sweet spot: 3 van 6 speurders raadden goed". Teamscore = gemiddelde over de getoonde beelden van het team; geen getoond beeld: neutrale 1 ("niet getoond: neutraal") zodat geen team benadeeld wordt door de selectie.
-- **Veto/uitval**: doelwit veto of doelwit weggevallen: maker krijgt neutrale 1 met reden; geen straf.
-- **Liegen**: een kandidaat die een speurder misleidt krijgt niets; leugens zijn sociaal, niet geregistreerd. Wel telt de koppeling gewoon, dus misleiden verlaagt vooral de speurderscore en maakt de sweet spot waarschijnlijker.
-- **Schaduw (r4)**: juist "niemand" te kiezen bij het nepplaatje = 2 punten; verkeerde persoon = 0 (reden: "vals alarm").
-- **AI-storing**: terugvalbeeld → beide partijen krijgen `fallbackPoints` (1), maakpunten niet via sweet spot.
-- **Tie-break**: meeste goede koppelingen, daarna meeste sweet-spot-beelden, daarna loting (seed).
-- Elke regel heeft een reden; correcties alleen via nieuwe regels (`ledger.correct`). In `results` toont het scherm per team alle regels (`explain`).
-- **Vergelijkbaar tussen groepen**: `comparable: mean-points-per-round` (0-4 per ronde: 0-2 raden + 0-2 maken, gemiddeld per lid/per getoond beeld), onafhankelijk van spelers- of teamaantal; finale telt los (dubbele punten). Maximaal verschil door selectie wordt gelogd in de export.
+## 10. Scoring (alleen raden)
+- Per juiste koppeling 2 punten voor het team van de speurder, reden: "juist gekoppeld: plaatje 7 = Joris (ronde 2)".
+- Uitgesloten: een speler kan het plaatje dat hij maakte en het plaatje waar hij zelf op staat niet koppelen (telefoon grijst ze uit).
+  Teamgenoten mogen die plaatjes wél koppelen; zie risico R4 waarom dat eerlijk blijft.
+- Fout of geen antwoord: 0, zonder strafpunten (wel gelogd).
+- **Vergelijkbaar**: rondescore per speler = `2 × juist / aantal plaatjes dat hij mocht koppelen` (0-2). Teamscore per ronde = gemiddelde
+  van de leden die die ronde speurder waren. Eindscore = som van de rondescores + finale. Zo maakt teamgrootte of galleriegrootte
+  niet uit. Declaratie: `comparable: mean-per-member-per-round`. In de ledger komt één regel per team per ronde met de genormaliseerde score en een leesbare reden ("Blauw: 9 van 16 juist, gemiddeld 1,13 per lid").
+- **Finale**: per juiste teamkoppeling 2 × `finaleMultiplier` (2), zelfde normalisatie; het eigen teamportret is uitgesloten.
+- Plaatje met terugval (AI-storing): telt gewoon mee; het onderwerp en de onthulling blijven werken.
+- Kandidaat weggelopen: zijn plaatje gaat uit de ronde (reden gelogd); niemand verliest punten.
+- Tie-break: meeste juiste koppelingen in totaal, dan meeste juiste in de finale, dan loting (seed).
+- Elke regel heeft een reden; correcties alleen via nieuwe regels (`ledger.correct`).
 
-## 11. Finale: Het Grote Portret (alle teams)
-Elke speler tikt één woord op de vraag "Als deze zaal een weertype was, welk?" (≤ 3 s, ook spraak). Embedding-clusters bepalen het beeld; de AI maakt één groot portret van de zaal (wachttijd: iedereen poseert als het beeld). Daarna raadt iedereen welk team welk van 6-8 woorden gaf (1 tik per woord). Punten: 2 per goede koppeling × `finaleMultiplier` (2), **bijdrage +1** voor elk team dat een woord leverde, ook zonder getoond woord. Teams of spelers die niet kunnen bewegen doen mee op de telefoon: niemand valt af. Bij AI-storing krijgt elk team vaste punten.
+## 11. Finale: teamportretten (alle teams)
+Voor elk team voegt de AI de prompts samen die anderen over zijn leden schreven, en maakt daarvan één teamplaatje ("als team Blauw één
+wezen was"). Alle teamplaatjes komen genummerd op het scherm. Iedereen koppelt ze aan de teamnamen, met alles wat hij in de rondes over
+mensen leerde; teams mogen overleggen en rondlopen. Het eigen team is uitgesloten. Iedereen doet mee; ook teams die laag staan kunnen
+met dubbele punten inlopen. Onthulling: teamplaatje + de losse plaatjes van de leden eronder.
+Bij 2 teams: de finale wordt "welk van de twee", dat is te makkelijk; dan koppelt iedereen in de finale de muur-plaatjes of, zonder muur,
+3 willekeurige plaatjes uit eerdere rondes opnieuw aan namen ("weet je het nog?").
 
 ## 12. Spelinstellingen (standaard)
-`rounds` auto (min(4, plan)) · `gallerySize` 8 (max 12) · `maxPromptWords` 60 (r2: 8) · `maxAttempts` 2 · `promptSecMax` 90 · `interviewSec` 240 · `searchSec` 210 · `aiTimeoutSec` 25 · `bluff` true (vanaf r1, uit te zetten) · `veto` true · `alterEgo` true · `shadow` true (alleen r4) · `generateAll` true · `aiBudgetUsd` 8 · `fallbackPoints` 1 · `finaleMultiplier` 2 · `durationMin` (20/40/60) · `lang` (`nl`/`en`) · `mode` (`test` standaard, `live` met provider).
+`galleryMax` 12 · `minPerRound` 4 · `interviewSec` 300 · `promptSecMax` 90 · `maxAttempts` 2 · `searchSec` 210 · `matchSec` 60 ·
+`questionsPerCandidate` 1 · `themeMode` `perPortrait` (anders `perRound`) · `maxSimilarity` 0,85 · `aiTimeoutSec` 30 · `imageConcurrency` 8 ·
+`finaleMultiplier` 2 · `durationMin` (20/40/60) · `lang` (`nl`/`en`) · `mode` (`test` standaard, `live` met provider).
 
 ## 13. Schema klantpakket (`packs/<naam>/pack.json`, sleutel `wieIsWie`)
 ```json
 {
   "wieIsWie": {
-    "interviewCards": { "nl": ["Wat doe je op een vrije zondag?", "Welk talent heb je dat niemand verwacht?"],
-                         "en": ["What do you do on a free Sunday?", "What unexpected talent do you have?"] },
-    "themes": { "nl": ["als jij een dier was", "als jij een weertype was", "als jij een plek was"],
-                "en": ["if you were an animal", "if you were a weather type", "if you were a place"] },
-    "bannedWords": { "nl": ["haar", "bril", "lang", "baard", "functie"], "en": ["hair", "glasses", "beard", "title"] },
-    "style": "zachte aquarel, geen gezichten, geen tekst",
-    "stock": [ { "id": "s1", "tags": ["vos", "bos"], "image": "stock/vos.png" } ],
-    "shadows": [ { "id": "sh1", "persona": { "nl": "een nachtbibliothecaris", "en": "a night librarian" }, "image": "stock/uil.png" } ]
+    "questionSets": [
+      { "id": "A", "questions": {
+        "nl": ["Wat is het vreemdste dat je ooit hebt gegeten?", "Welk klein ritueel heb je elke ochtend?", "Waar was je als kind het meest bang voor?"],
+        "en": ["What is the strangest thing you have ever eaten?", "What small ritual do you have every morning?", "What were you most afraid of as a child?"] } }
+    ],
+    "themes": { "nl": ["een dier", "een gerecht", "een plek", "een voertuig", "een plant", "een muziekinstrument", "een weertype", "een meubelstuk"],
+                "en": ["an animal", "a dish", "a place", "a vehicle", "a plant", "a musical instrument", "a type of weather", "a piece of furniture"] },
+    "style": { "nl": "zachte aquarel, warm licht", "en": "soft watercolour, warm light" },
+    "bannedWords": { "nl": ["haar", "bril", "baard", "lang", "klein", "functie", "manager"], "en": ["hair", "glasses", "beard", "tall", "short", "manager"] },
+    "stock": [ { "theme": "een dier", "image": "stock/dier.png" } ],
+    "useNicknames": true
   },
   "texts": { "nl": {}, "en": {} },
   "blocklist": []
 }
 ```
-Voorbeeldpakket in `packs/demo/pack.json` (10 interviewkaarten, 6 thema's, 8 stockbeelden, 3 schaduwen). Klantinhoud nooit in code.
+Voorbeeldpakket `packs/demo/pack.json`: 5 vragensets × 3 vragen, 12 onderwerpen. Richtlijn voor vragen (in README): elke set heeft één
+feit, één gewoonte en één verhaal; geen vragen naar beroep, uiterlijk, gezin of gezondheid; vragen die tot een concreet, eigen antwoord
+leiden. Klantinhoud nooit in code.
 
-## 14. Risico's en kosten
-Risico's: een prompt die iemand identificeert of kwetst (lek-check + moderatie + doelwit-veto); beeldmodel traag/weigert (stockbeeld-terugval); schermtijd rond 23% (bewaken); privacy (bijnamen, geen opslag van beelden na de sessie); 50 spelers = 50 prompts per ronde, dus beeldkosten schalen (zie hieronder, plafond in `aiBudgetUsd`); beeldgeneratie is nieuw in de engine (hoogste bouwrisico). Het Weerwolf-gevoel (liegen, schaduwplaatje) hangt aan de selectie van de schijnwerper; die moet zichtbaar eerlijk lijken.
-**AI-kosten per sessie (schatting, nog niet live gemeten)**: 50 spelers × 3 rondes × ~1,3 beelden = ~195 beelden × $0,02-0,04 ≈ **$4-8**; 12 spelers ≈ **$1-2**; leak-check + commentaar + moderatie ≈ $0,5; finale ≈ $0,05. Bij het bereiken van `aiBudgetUsd` schakelt de engine over op stockbeelden voor niet-getoonde prompts (`generateAll` valt terug naar alleen getoonde beelden), zodat getoonde beelden altijd AI-beelden blijven.
+## 14. Risico's (gecontroleerd) en maatregelen
+| # | Risico | Kans/impact | Maatregel | Hoe we het testen (fase 4) |
+|---|---|---|---|---|
+| R1 | **Plaatjes lijken op elkaar** omdat antwoorden op elkaar lijken ("ik hou van reizen en lekker eten") | hoog/hoog | (a) **onderscheidende vragen**: per set één feit, één gewoonte, één verhaal, met doorvraag ("wanneer was dat?"); generieke vragen ("hobby's?") staan niet in de sets. (b) **ander onderwerp per plaatje**: binnen een ronde krijgt elk plaatje een ander metafoor-onderwerp (dier, gerecht, voertuig…), dus vos naast ramen-soep naast tandem. (c) **algemeenheidscheck**: de AI markeert te algemene prompts en geeft één tip ("welk detail uit het gesprek past alleen bij je partner?"), één herkansing. (d) **gelijkenischeck**: embeddings vergelijken elke prompt met de andere in dezelfde set; boven `maxSimilarity` krijgt de maker "lijkt op een ander plaatje, voeg iets unieks toe". | sim met fixture-prompts die bewust op elkaar lijken; meten: gemiddelde en maximale gelijkenis per set vóór/na de checks; rooktest met echte beelden |
+| R2 | Plaatjes zijn te makkelijk (letterlijk: "een fietsende vos") of te moeilijk (onherleidbaar) | midden/midden | onderwerp dwingt metafoor af; één vraag per kandidaat; AI-check markeert alleen algemeen, niet "te makkelijk" (is een keuze van de speler); onthulling laat zien hoe vaak goed | speltest Bram: aandeel juist per ronde, doel 30-70% |
+| R3 | Prompt verraadt iemand of kwetst (uiterlijk, naam, functie, gevoelige info uit het interview) | midden/hoog | lek-check + moderatie + verboden woorden; vragen gaan niet over gevoelige onderwerpen; veiligheidssuffix in beeldprompt | moderatietest met ongepaste prompts |
+| R4 | **Verklappen**: maker en geïnterviewde weten het antwoord | zeker/midden | zij kunnen hun eigen twee plaatjes niet koppelen; sets zijn gelijk verdeeld over teams, dus elk team heeft per ronde ongeveer evenveel "insiders": verklappen binnen het team is voor alle teams even groot voordeel (symmetrisch), verklappen aan een ander team helpt een tegenstander; afspraak "verklap niets" in de uitleg. Team uitsluiten (eerder overwogen) is **niet** gekozen: bij 2-3 teams zou dan bijna niemand meer mogen raden. | unit test: uitsluiting; sim: balans van kandidaten per team per ronde (max verschil 1) |
+| R5 | Kandidaten zijn niet te vinden in een volle zaal | midden/midden | naambadge groot op de telefoon, omhoog houden; kandidaten blijven op hun plek; scherm toont teamkleur | Playwright: badge leesbaar, tekst ≥ 32 px |
+| R6 | Drukte rond kandidaten (40 speurders, 10 kandidaten): ±4 tegelijk | hoog/laag | meeluisteren mag (dat is kennismaken); een kandidaat beantwoordt per speurder één vraag in één of twee zinnen; `searchSec` instelbaar | timing in sim; speltest |
+| R7 | 50 beelden tegelijk: latency of providerlimiet | midden/midden | `imageConcurrency` 8, set A eerst, rest tijdens ronde 1; terugval stockbeeld | timing met 20 s latency per beeld: set A van 12 klaar ≤ 60 s |
+| R8 | Laatkomer of wegloper | zeker/laag | laatkomer: alleen speurder (geen plaatje), of tweetal met een andere laatkomer als de promptfase nog loopt; wegloper: zijn plaatje gaat uit de ronde; partner zonder partner: maakt nog steeds het plaatje als het interview klaar was | chaos-tests |
+| R9 | Te veel plaatjes om te koppelen | midden/midden | `galleryMax` 12, koppelen met één tik per plaatje op een lijst van ≤ 12 namen | Playwright op telefoonformaat |
+| R10 | Teamportret (finale) is een vage mengelmoes | midden/laag | samenvoegen kiest per lid het sterkste beeldelement (één zin per lid), max 5 leden; terugval: collage van de losse plaatjes | sim + rooktest |
+| R11 | Kosten | laag | Bram: geen probleem; toch begrensd door het aantal plaatjes (één per speler + één per team) | rooktest: gemeten kosten per sessie |
+
+**AI-kosten per sessie (schatting, nog niet gemeten)**: 50 spelers: 50 plaatjes + ±10 herkansingen + 12 teamplaatjes ≈ 72 beelden ×
+$0,02-0,04 ≈ **$1,5-3**; checks, commentaar en moderatie ≈ $0,3. 12 spelers ≈ **$0,5**.

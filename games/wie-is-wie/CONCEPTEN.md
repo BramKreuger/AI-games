@@ -129,3 +129,8 @@ Concept A, aangepast op zijn feedback: iedereen interviewt in een cross-team twe
 van de portretten per ronde (Weerwolf-gevoel: kandidaten mogen liegen, een nepplaatje bij niemand). Rondes verschillen per
 twist (vrij, woordlimiet, nieuw tweetal, schaduw) om 40-60 min te vullen. Orakel (B) vervalt als apart blok; Verbod-ladder (3)
 zit in ronde 2.
+
+## Bijgesteld (tweede overleg, 2026-10-01)
+Liegen, nepplaatje, veto en alter ego vervallen. Iedereen interviewt één keer aan het begin; de tweetallen krijgen verschillende
+vragensets en elke ronde draait om één set (tonen, zoeken, koppelen). Punten alleen voor raden. Alleen maker en geïnterviewde
+zijn uitgesloten van hun eigen plaatjes (teamuitsluiting werkt niet bij 2-3 teams). Volledige uitwerking en risico's: DESIGN.md.
