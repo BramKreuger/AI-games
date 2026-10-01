@@ -285,5 +285,186 @@
         }
       }
     ]
+  },
+  "wieIsWie": {
+    "questionSets": [
+      {
+        "id": "A",
+        "questions": {
+          "nl": [
+            "Wat is het vreemdste dat je ooit hebt gegeten?",
+            "Welk klein ritueel heb je elke ochtend?",
+            "Waar was je als kind het meest bang voor?"
+          ],
+          "en": [
+            "What is the strangest thing you have ever eaten?",
+            "What small ritual do you have every morning?",
+            "What were you most afraid of as a child?"
+          ]
+        }
+      },
+      {
+        "id": "B",
+        "questions": {
+          "nl": [
+            "Wat wilde je als kind later worden?",
+            "Welke plek ter wereld wil je nog zien, en waarom die?",
+            "Waar kun je urenlang over praten?"
+          ],
+          "en": [
+            "What did you want to be as a child?",
+            "Which place in the world do you still want to see, and why that one?",
+            "What could you talk about for hours?"
+          ]
+        }
+      },
+      {
+        "id": "C",
+        "questions": {
+          "nl": [
+            "Wat is de beste beslissing die je ooit nam?",
+            "Welk talent heb je dat niemand van je verwacht?",
+            "Wat doe je op een vrije zondag als niemand iets van je wil?"
+          ],
+          "en": [
+            "What is the best decision you ever made?",
+            "Which talent do you have that nobody expects?",
+            "What do you do on a free Sunday when nobody needs you?"
+          ]
+        }
+      },
+      {
+        "id": "D",
+        "questions": {
+          "nl": [
+            "Welk geluid of welke geur doet je meteen aan vroeger denken?",
+            "Wat verzamel je, of wat heb je ooit verzameld?",
+            "Wat is het spannendste dat je ooit hebt gedaan?"
+          ],
+          "en": [
+            "Which sound or smell instantly takes you back to your childhood?",
+            "What do you collect, or what did you once collect?",
+            "What is the most exciting thing you have ever done?"
+          ]
+        }
+      },
+      {
+        "id": "E",
+        "questions": {
+          "nl": [
+            "Welk liedje zet je op als je blij wilt worden?",
+            "Waar ben je stiekem trots op?",
+            "Wat zou je doen met een week extra vrij?"
+          ],
+          "en": [
+            "Which song do you play when you want to feel happy?",
+            "What are you secretly proud of?",
+            "What would you do with an extra week off?"
+          ]
+        }
+      }
+    ],
+    "themes": {
+      "nl": [
+        "een dier",
+        "een gerecht",
+        "een plek",
+        "een voertuig",
+        "een plant",
+        "een muziekinstrument",
+        "een weertype",
+        "een meubelstuk",
+        "een snoepje",
+        "een gebouw",
+        "een sport",
+        "een stilleven"
+      ],
+      "en": [
+        "an animal",
+        "a dish",
+        "a place",
+        "a vehicle",
+        "a plant",
+        "a musical instrument",
+        "a type of weather",
+        "a piece of furniture",
+        "a sweet",
+        "a building",
+        "a sport",
+        "a still life"
+      ]
+    },
+    "style": {
+      "nl": "zachte aquarel, warm licht, speels",
+      "en": "soft watercolour, warm light, playful"
+    },
+    "bannedWords": {
+      "nl": [
+        "haarkleur",
+        "kapsel",
+        "krullen",
+        "krullenbol",
+        "bril",
+        "brillen",
+        "baard",
+        "snor",
+        "lengte",
+        "blond",
+        "blonde",
+        "kaal",
+        "sproeten",
+        "tattoo",
+        "tatoeage",
+        "huidskleur",
+        "leeftijd",
+        "functie",
+        "manager",
+        "directeur",
+        "teamleider"
+      ],
+      "en": [
+        "hair",
+        "haircut",
+        "curls",
+        "glasses",
+        "beard",
+        "moustache",
+        "height",
+        "tall",
+        "blond",
+        "blonde",
+        "bald",
+        "freckles",
+        "tattoo",
+        "skin",
+        "age",
+        "manager",
+        "director",
+        "teamlead"
+      ]
+    },
+    "genericWords": {
+      "nl": [
+        "reizen",
+        "lekker eten",
+        "gezellig",
+        "vrienden",
+        "familie",
+        "netflix",
+        "sporten",
+        "leuk",
+        "aardig"
+      ],
+      "en": [
+        "travel",
+        "good food",
+        "friends",
+        "family",
+        "netflix",
+        "sports",
+        "nice",
+        "fun"
+      ]
+    }
   }
 }

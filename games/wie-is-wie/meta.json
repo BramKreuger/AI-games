@@ -1,0 +1,3 @@
+{ "title": { "nl": "Wie is Wie", "en": "Who is Who" },
+  "summary": { "nl": "Interview iemand van een ander team, laat de AI een metafoor-plaatje van je partner maken, en raad daarna in rondes wie wie is.", "en": "Interview someone from another team, let the AI make a metaphor picture of your partner, then guess who is who in rounds." },
+  "status": "speltest-nodig", "tags": ["kennismaken", "beeldgeneratie", "rondlopen"] }
