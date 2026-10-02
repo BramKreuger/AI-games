@@ -1,4 +1,4 @@
-export const ENGINE_VERSION = '1.1.0';
+export const ENGINE_VERSION = '1.2.0';
 
 // Minimale semver-range check: ^x.y.z, x.y.z of x.x
 export function satisfies(version, range) {

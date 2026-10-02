@@ -22,10 +22,12 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
       console.log(`${players}p/${teams}t/${d}min: ${res.plan.map((b) => `${b.id}=${b.minutes}`).join(' ')} export=${valid.valid ? 'ok' : valid.errors} top=${res.totals[0].teamId}:${res.totals[0].points}`);
     }
   } else {
-    const { simulate: gen } = await import('./sim-generic.js');
-    for (const [players, teams, d] of grid) {
+    const { simulate: gen, loadGame } = await import('./sim-generic.js');
+    const { limits: L } = (await loadGame(slug)).game;   // raster binnen de grenzen van het spel
+    for (const [p, t, d] of grid) {
+      const players = Math.min(L.maxPlayers, Math.max(L.minPlayers, p)), teams = Math.min(L.maxTeams, Math.max(L.minTeams, t));
       const { res, valid } = await gen(slug, { players, teams, durationMin: d });
-      console.log(`${players}p/${teams}t/${d}min: ${res.plan.map((b) => `${b.id}=${b.minutes}`).join(' ')} export=${valid.valid ? 'ok' : valid.errors} top=${res.totals[0].teamId}:${res.totals[0].points}`);
+      console.log(`${players}p/${teams}t/${d}min: ${res.plan.map((b) => `${b.id}=${b.minutes}`).join(' ')} export=${valid.valid ? 'ok' : valid.errors} top=${res.totals[0].teamId}:${Math.round(res.totals[0].points * 100) / 100}`);
     }
   }
 }

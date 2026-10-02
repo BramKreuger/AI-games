@@ -4,3 +4,4 @@ window.loadUI = async (lang) => { const ui = await (await fetch('/web/ui.json'))
 window.api = async (path, opts) => { const r = await fetch(path, opts); return r.json(); };
 window.post = (path, data) => api(path, { method: 'POST', body: JSON.stringify(data) });
 window.esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+window.pts = (n) => String(Math.round(Number(n) * 100) / 100);   // punten leesbaar (geen 1.7200000000000002)

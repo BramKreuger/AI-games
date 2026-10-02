@@ -3,19 +3,19 @@
 input,select,button{font:inherit;padding:8px;margin:4px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #8884;padding:4px 8px;text-align:left}.off{color:#c33}.on{color:#2a2}</style></head>
 <body><main><h1>Dashboard</h1><form id="f"><a href="/games">Alle spellen</a> <select id="g"></select>
 <select id="l"><option value="nl">Nederlands</option><option value="en">English</option></select>
-<input id="m" type="number" value="40" min="20" max="60" aria-label="minuten"><input id="b" type="number" value="0" min="0" max="60" aria-label="bots"><button>Start</button><button type="button" id="stop">Stop sessie</button></form>
+<input id="m" type="number" value="40" min="20" max="60" aria-label="minuten"><input id="b" type="number" value="0" min="0" max="60" aria-label="bots"><select id="md" aria-label="AI"><option value="test">Testmodus (geen kosten)</option><option value="live">Live (echte AI)</option></select><button>Start</button><button type="button" id="stop">Stop sessie</button></form>
 <p id="st"></p><h2>Spelers</h2><table id="pl"></table><h2>Stand</h2><table id="tot"></table><h2>Regels</h2><table id="en"></table>
 <form id="c"><input id="ce" placeholder="regel-id"><input id="cd" type="number" placeholder="punten"><input id="cr" placeholder="reden"><button>Corrigeer</button></form></main>
 <script src="/web/common.js"></script>
 <script>
-document.getElementById('f').onsubmit = async (e) => { e.preventDefault(); const r = await post('/api/start', { slug: g.value, lang: l.value, durationMin: Number(m.value), bots: Number(b.value) }); if (r.error) st.textContent = r.error; };
+document.getElementById('f').onsubmit = async (e) => { e.preventDefault(); const r = await post('/api/start', { slug: g.value, lang: l.value, durationMin: Number(m.value), bots: Number(b.value), mode: md.value }); if (r.error) st.textContent = r.error; };
 api('/api/games').then((gs) => { g.innerHTML = gs.map((x) => `<option value="${esc(x.slug)}">${esc(x.title.nl)}</option>`).join(''); const q = new URLSearchParams(location.search).get('game'); if (q) g.value = q; });
 stop.onclick = () => post('/api/reset', {});
 document.getElementById('c').onsubmit = async (e) => { e.preventDefault(); await post('/api/correct', { entryId: ce.value, delta: Number(cd.value), reason: cr.value }); };
 async function tick() { const d = await api('/api/dashboard');
   st.textContent = `${d.state}${d.error ? ' — ' + d.error : ''}${d.valid === null ? '' : d.valid ? ' — export geldig' : ' — export ONGELDIG'}`;
   pl.innerHTML = '<tr><th>Naam</th><th>Team</th><th>Rol</th><th>Verbonden</th></tr>' + d.players.map((p) => `<tr><td>${esc(p.name)}</td><td>${esc(p.teamId)}</td><td>${p.optOut ? 'opt-out' : ''}</td><td class="${p.connected ? 'on' : 'off'}">${p.connected ? 'ja' : 'nee'}</td></tr>`).join('');
-  tot.innerHTML = d.totals.map((t) => `<tr><td>${esc(t.teamId)}</td><td>${t.points}</td></tr>`).join('');
+  tot.innerHTML = d.totals.map((t) => `<tr><td>${esc(t.teamId)}</td><td>${pts(t.points)}</td></tr>`).join('');
   en.innerHTML = d.entries.slice(-30).map((e) => `<tr><td>${e.id}</td><td>${esc(e.teamId)}</td><td>${e.points}</td><td>${esc(e.reason)}</td></tr>`).join(''); }
 setInterval(tick, 1500); tick();
 </script></body></html>

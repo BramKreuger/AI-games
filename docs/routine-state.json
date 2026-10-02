@@ -13,7 +13,17 @@
       "phase": 5,
       "step": "gemerged, wacht op speltest Bram",
       "pr": 1
+    },
+    {
+      "slug": "wie-is-wie",
+      "branch": "claude/relaxed-tesla-aanvuh",
+      "phase": 5,
+      "step": "gebouwd en getest, wacht op speltest Bram",
+      "concepts_done": true,
+      "chosen": "Portretgalerij (bijgesteld met Bram)",
+      "pr": 4,
+      "notes": "handmatige run met Bram; engine 1.2 met beeldstap en OpenAI-provider"
     }
   ],
-  "next": "openai-provider voor rooktest, daarna nieuw spel"
+  "next": "speltest wie-is-wie, levend-beeld en stille-post met echte mensen"
 }

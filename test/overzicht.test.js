@@ -30,3 +30,12 @@ test('server: overzicht, wisselen tussen spellen via stop en start', async () =>
     assert.equal((await (await fetch(`${base}/api/state`)).json()).slug, 'demo');
   } finally { await srv.close(); }
 });
+
+test('server: HOST=0.0.0.0 luistert op alle netwerken (telefoons in hetzelfde wifi)', async () => {
+  const srv = createLiveServer({ host: '0.0.0.0' });
+  const port = await srv.listen();
+  try {
+    assert.equal(srv.server.address().address, '0.0.0.0');
+    assert.equal((await fetch(`http://127.0.0.1:${port}/phone`)).status, 200);
+  } finally { await srv.close(); }
+});

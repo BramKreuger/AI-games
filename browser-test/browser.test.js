@@ -146,3 +146,45 @@ test('spellenoverzicht: alle spellen zichtbaar, starten en wisselen', async () =
     if (process.env.SHOT) await page.screenshot({ path: process.env.SHOT });
   } finally { await browser.close(); await srv.close(); }
 });
+
+// Wie is Wie: klaar-knop, prompt, koppelen met plaatjes op de telefoon; galerij met beelden op het grote scherm.
+test('wie-is-wie: telefoon (iPhone) en groot scherm 1920x1080 met galerij', async () => {
+  const { srv, base } = await setup();
+  const browser = await launch();
+  try {
+    const phone = await (await browser.newContext(devices['iPhone 13'])).newPage();
+    phone.setDefaultTimeout(2000);   // de telefoon rendert elke 800 ms opnieuw: geen 30 s wachten op een verdwenen knop
+    await phone.goto(`${base}/phone`); await phone.fill('#n', 'Ann'); await phone.fill('#t', 'T1'); await phone.click('#j'); await phone.waitForSelector('text=Ann');
+    const screen = await (await browser.newContext({ viewport: { width: 1920, height: 1080 } })).newPage();
+    await screen.goto(`${base}/screen`);
+    await startGame(base, { slug: 'wie-is-wie', bots: 9, durationMin: 20 });
+    let matched = false, prompted = false, gallery = null;
+    const t = Date.now();
+    while (Date.now() - t < 60000) {
+      if ((await (await fetch(`${base}/api/dashboard`)).json()).state === 'done') break;
+      if (await phone.locator('#rd').count()) await phone.click('#rd').catch(() => {});
+      else if (await phone.locator('select.m').count()) {
+        assert.ok(await phone.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'horizontaal scrollen bij koppelen');
+        assert.ok(await phone.evaluate(() => [...document.querySelectorAll('.mi img')].every((i) => i.complete && i.naturalWidth > 0)), 'plaatje niet geladen');
+        for (const sel of await phone.locator('select.m').all()) await sel.selectOption({ index: 1 }).catch(() => {});
+        await phone.click('#mm').catch(() => {}); matched = true;
+      } else if (await phone.locator('#x').count()) { await phone.fill('#x', 'een egel die elke ochtend drie keer rond de vijver loopt en dan fluit').catch(() => {}); await phone.click('#s').catch(() => {}); prompted = true; }
+      if (!gallery && await screen.locator('.grid img').count()) {
+        await screen.waitForFunction(() => [...document.querySelectorAll('.grid img')].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 5000 });
+        gallery = await screen.evaluate(() => ({ n: document.querySelectorAll('.grid img').length, sizes: [...document.querySelectorAll('.grid figcaption,.line')].map((e) => parseFloat(getComputedStyle(e).fontSize)) }));
+        if (process.env.SHOT_DIR) await screen.screenshot({ path: `${process.env.SHOT_DIR}/wie-is-wie-screen.png` });
+      }
+      await phone.waitForTimeout(200);
+    }
+    assert.ok(prompted, 'geen prompt op de telefoon'); assert.ok(matched, 'geen koppelscherm op de telefoon');
+    assert.ok(gallery && gallery.n >= 2, 'geen galerij op het grote scherm');
+    assert.ok(gallery.sizes.every((s) => s >= 32), `kleine tekst: ${gallery.sizes}`);
+    const d = await (await fetch(`${base}/api/dashboard`)).json();
+    assert.equal(d.state, 'done'); assert.equal(d.valid, true);
+    // Regressie (live run): punten met lange decimalen en eindscherm zonder uitslagregel.
+    await screen.waitForTimeout(1500);
+    const board = await screen.locator('#board p').allTextContents();
+    assert.ok(board.every((x) => /— -?\d+(\.\d{1,2})?$/.test(x)), `stand onleesbaar: ${board}`);
+    assert.ok(await screen.locator('text=Uitslag').isVisible(), 'uitslag niet zichtbaar op eindscherm');
+  } finally { await browser.close(); await srv.close(); }
+});

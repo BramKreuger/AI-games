@@ -2,7 +2,9 @@
 <style>
 :root{--bg:#0b1020;--fg:#fff;--ac:#ffd166}body{margin:0;background:var(--bg);color:var(--fg);font:36px/1.35 system-ui,sans-serif}
 main{padding:32px 48px;display:grid;grid-template-columns:2fr 1fr;gap:32px;height:100vh;box-sizing:border-box}h1,h2{font-size:48px;margin:0 0 12px;color:var(--ac)}
-.line{margin:10px 0;font-size:36px}.lines{overflow:hidden}.board p{margin:6px 0;font-size:36px}.big{font-size:44px}
+.line{margin:10px 0;font-size:36px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:12px}
+.grid figure{margin:0}.grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}.grid figcaption{font-size:32px;margin-top:4px}
+.rev{display:flex;gap:24px;align-items:center;margin:12px 0}.rev img{width:260px;height:260px;object-fit:cover;border-radius:12px;flex:none}.rev div{font-size:32px}.lines{overflow:hidden}.board p{margin:6px 0;font-size:36px}.big{font-size:44px}
 </style></head><body><main><section><h1 id="title">AI-games</h1><div class="lines" id="lines"></div></section><aside class="board"><h2 id="bt"></h2><div id="board"></div></aside></main>
 <script src="/web/common.js"></script>
 <script>
@@ -11,9 +13,22 @@ main{padding:32px 48px;display:grid;grid-template-columns:2fr 1fr;gap:32px;heigh
   async function tick() {
     const v = await api('/api/state'); lang = v.lang; const ui = all[lang] ?? all.nl; document.documentElement.lang = lang;
     document.getElementById('bt').textContent = ui.leaderboard;
-    document.getElementById('board').innerHTML = v.totals.map((t) => `<p>${esc(t.teamId)} — ${t.points}</p>`).join('');
-    const evs = v.screen.slice(-6);
-    document.getElementById('lines').innerHTML = evs.map((e) => {
+    document.getElementById('board').innerHTML = v.totals.map((t) => `<p>${esc(t.teamId)} — ${pts(t.points)}</p>`).join('');
+    // Engine 1.2: schermgebeurtenissen met `images` (galerij of onthulling). Laatste galerij groot; onthullingen erna als kaarten.
+    const scr = v.screen, gi = scr.findLastIndex((e) => e.images && e.images.length > 1);
+    const fig = (im) => `<figure><img src="/asset/${esc(im.asset)}" alt=""><figcaption>${esc(im.label)}</figcaption></figure>`;
+    if (gi >= 0 && scr.slice(gi + 1).every((e) => e.images || e.kind === 'progress')) {
+      const reveals = scr.slice(gi + 1).filter((e) => e.images?.length === 1).slice(-3);
+      document.getElementById('lines').innerHTML = `<div class="line">${esc(scr[gi].text)}</div>` + (reveals.length
+        ? reveals.map((e) => `<div class="rev"><img src="/asset/${esc(e.images[0].asset)}" alt=""><div>${esc(e.text)}</div></div>`).join('')
+        : `<div class="grid">${scr[gi].images.map(fig).join('')}</div>`);
+      return;
+    }
+    const evs = scr.slice(-6);
+    document.getElementById('lines').innerHTML = evs.map((e, i) => {
+      // Alleen het laatste beeld groot; oudere onthullingen als tekst, zodat de nieuwste regel (bijv. uitslag) zichtbaar blijft.
+      if (e.images?.length === 1 && i < evs.length - 1) return `<div class="line">${esc(e.text)}</div>`;
+      if (e.images?.length === 1) return `<div class="rev"><img src="/asset/${esc(e.images[0].asset)}" alt=""><div>${esc(e.text)}</div></div>`;
       const t = e.kind === 'describe' ? `${ui.describe} ${e.text}` : e.kind === 'reveal' ? `${ui.reveal} “${e.concept}” · ${ui.guessed}: ${e.guess}` : e.kind === 'chain' ? `${ui.original}: ${e.original} → ${ui.chain}: ${e.final}` : e.kind === 'link' ? `${e.i}. ${e.text}` : e.text;
       return t ? `<div class="line">${esc(t)}</div>` : '';
     }).join('');

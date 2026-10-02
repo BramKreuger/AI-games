@@ -1,0 +1,58 @@
+{
+  "nl": {
+    "good": [
+      "{theme} dat 's ochtends eerst drie keer rond de tafel loopt voordat het koffie zet, met een boek over vulkanen onder de arm",
+      "{theme} die naar zeezout en kaneel ruikt, met kleine lampjes die aangaan als iemand over vroeger begint",
+      "{theme} vol plakboeken met treinkaartjes uit landen die het nog wil bezoeken",
+      "{theme} dat zingt onder de douche en stiekem een gouden medaille in een la bewaart",
+      "{theme} dat op zondag in de moestuin werkt en tegen de tomaten praat",
+      "{theme} met een rugzak vol kaartjes van concerten en een geheim recept voor pannenkoeken met zeewier"
+    ],
+    "generic": [
+      "{theme} dat houdt van reizen en lekker eten",
+      "{theme}, gezellig met vrienden en familie"
+    ],
+    "leak": [
+      "{theme} met blonde krullen en een bril",
+      "{theme} genaamd {partner}"
+    ],
+    "fixed": [
+      "{theme} dat oude sleutels verzamelt en elke sleutel een naam geeft",
+      "{theme} dat 's nachts zachtjes trompet oefent op het balkon",
+      "{theme} met een la vol zelfgemaakte jam van wilde bramen",
+      "{theme} dat ooit in een hete-luchtballon boven de woestijn zweefde",
+      "{theme} dat op vrijdag schaakt tegen een duif in het park",
+      "{theme} met zakken vol schelpen van een strand in Portugal",
+      "{theme} dat bij onweer altijd pannenkoeken bakt",
+      "{theme} dat brieven schrijft aan zijn toekomstige zelf"
+    ]
+  },
+  "en": {
+    "good": [
+      "{theme} that walks around the table three times every morning before making coffee, holding a book about volcanoes",
+      "{theme} smelling of sea salt and cinnamon, with tiny lights that switch on when someone talks about the past",
+      "{theme} full of scrapbooks with train tickets from countries it still wants to visit",
+      "{theme} that sings in the shower and secretly keeps a gold medal in a drawer",
+      "{theme} working in the vegetable garden on Sundays, talking to the tomatoes",
+      "{theme} with a backpack full of concert tickets and a secret recipe for seaweed pancakes"
+    ],
+    "generic": [
+      "{theme} that likes travel and good food",
+      "{theme}, fun with friends and family"
+    ],
+    "leak": [
+      "{theme} with long blond hair and glasses",
+      "{theme} called {partner}"
+    ],
+    "fixed": [
+      "{theme} that collects old keys and names every one of them",
+      "{theme} that softly practises trumpet on the balcony at night",
+      "{theme} with a drawer full of homemade wild blackberry jam",
+      "{theme} that once floated over the desert in a hot-air balloon",
+      "{theme} playing chess against a pigeon in the park every Friday",
+      "{theme} with pockets full of shells from a beach in Portugal",
+      "{theme} that always bakes pancakes during thunderstorms",
+      "{theme} writing letters to its future self"
+    ]
+  }
+}
