@@ -8,6 +8,7 @@ npm run sim wie-is-wie     # bot-simulatie (6p/2t/20, 12p/4t/40, 60p/12t/60, 13p
 npm test                   # alle tests (spelspecifiek: test/wie-is-wie.test.js)
 npm run serve              # livelaag; dashboard → spel "Wie is Wie" → AI: Testmodus of Live
 ```
+Speltest met telefoons in hetzelfde wifi: `HOST=0.0.0.0 npm run serve`; de server toont dan het adres voor de telefoons (`http://<ip-laptop>:8080/phone`). Telefoons buiten het netwerk: een tunnel zoals `cloudflared tunnel --url http://localhost:8080` (zet Live dan alleen aan zolang de test loopt; iedereen met de link kan meedoen).
 Live met echte AI: zet `OPENAI_GAME_KEY` en kies op het dashboard "Live (echte AI)". Achter een proxy: `NODE_USE_ENV_PROXY=1 npm run serve`. Modellen via `OPENAI_TEXT_MODEL` (standaard `gpt-4.1-mini`), `OPENAI_IMAGE_MODEL` (`gpt-image-1-mini`), `OPENAI_IMAGE_QUALITY` (`low`), `OPENAI_EMBED_MODEL` (`text-embedding-3-small`).
 Vanuit code: `simulate('wie-is-wie', { players, teams, durationMin, mode: 'live', provider: createOpenAIProvider() })`.
 

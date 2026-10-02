@@ -12,7 +12,7 @@ const page = (f) => readFileSync(new URL(f, WEB), 'utf8');
 const json = (res, obj, code = 200) => { res.writeHead(code, { 'content-type': 'application/json' }); res.end(JSON.stringify(obj)); };
 const body = (req) => new Promise((ok) => { let b = ''; req.on('data', (c) => { b += c; if (b.length > 3e6) req.destroy(); }); req.on('end', () => { try { ok(JSON.parse(b || '{}')); } catch { ok({}); } }); });
 
-export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15, pack = loadPack() } = {}) {
+export function createLiveServer({ port = 0, host = '127.0.0.1', timeoutScale = 1, presenceSec = 15, pack = loadPack() } = {}) {
   const players = new Map();       // id -> { id, name, teamId, optOut, lastSeen, inbox[] }
   const pending = new Map();       // inputId -> { teamId, playerId, kind, timeoutSec, resolve }
   let seq = 0, run = null;         // run: { slug, lang, session, state, result, cursor }
@@ -142,13 +142,20 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
 
   return {
     server, players, pending,
-    listen: () => new Promise((ok) => server.listen(port, '127.0.0.1', () => ok(server.address().port))),
+    listen: () => new Promise((ok) => server.listen(port, host, () => ok(server.address().port))),
     close: () => new Promise((ok) => { server.closeAllConnections?.(); server.close(ok); }),
     get run() { return run; },
   };
 }
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
-  const srv = createLiveServer({ port: Number(process.env.PORT ?? 8080) });
-  console.log(`http://127.0.0.1:${await srv.listen()}/dashboard  (spellen: /games, telefoon: /phone, groot scherm: /screen)`);
+  // HOST=0.0.0.0: ook bereikbaar voor telefoons in hetzelfde netwerk (standaard alleen deze computer).
+  const host = process.env.HOST ?? '127.0.0.1';
+  const srv = createLiveServer({ port: Number(process.env.PORT ?? 8080), host });
+  const p = await srv.listen();
+  console.log(`http://127.0.0.1:${p}/dashboard  (spellen: /games, telefoon: /phone, groot scherm: /screen)`);
+  if (host === '0.0.0.0') {
+    const { networkInterfaces } = await import('node:os');
+    for (const a of Object.values(networkInterfaces()).flat()) if (a?.family === 'IPv4' && !a.internal) console.log(`telefoons in dit netwerk: http://${a.address}:${p}/phone`);
+  }
 }
