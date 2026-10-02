@@ -13,7 +13,7 @@ main{padding:32px 48px;display:grid;grid-template-columns:2fr 1fr;gap:32px;heigh
   async function tick() {
     const v = await api('/api/state'); lang = v.lang; const ui = all[lang] ?? all.nl; document.documentElement.lang = lang;
     document.getElementById('bt').textContent = ui.leaderboard;
-    document.getElementById('board').innerHTML = v.totals.map((t) => `<p>${esc(t.teamId)} — ${t.points}</p>`).join('');
+    document.getElementById('board').innerHTML = v.totals.map((t) => `<p>${esc(t.teamId)} — ${pts(t.points)}</p>`).join('');
     // Engine 1.2: schermgebeurtenissen met `images` (galerij of onthulling). Laatste galerij groot; onthullingen erna als kaarten.
     const scr = v.screen, gi = scr.findLastIndex((e) => e.images && e.images.length > 1);
     const fig = (im) => `<figure><img src="/asset/${esc(im.asset)}" alt=""><figcaption>${esc(im.label)}</figcaption></figure>`;
@@ -25,7 +25,9 @@ main{padding:32px 48px;display:grid;grid-template-columns:2fr 1fr;gap:32px;heigh
       return;
     }
     const evs = scr.slice(-6);
-    document.getElementById('lines').innerHTML = evs.map((e) => {
+    document.getElementById('lines').innerHTML = evs.map((e, i) => {
+      // Alleen het laatste beeld groot; oudere onthullingen als tekst, zodat de nieuwste regel (bijv. uitslag) zichtbaar blijft.
+      if (e.images?.length === 1 && i < evs.length - 1) return `<div class="line">${esc(e.text)}</div>`;
       if (e.images?.length === 1) return `<div class="rev"><img src="/asset/${esc(e.images[0].asset)}" alt=""><div>${esc(e.text)}</div></div>`;
       const t = e.kind === 'describe' ? `${ui.describe} ${e.text}` : e.kind === 'reveal' ? `${ui.reveal} “${e.concept}” · ${ui.guessed}: ${e.guess}` : e.kind === 'chain' ? `${ui.original}: ${e.original} → ${ui.chain}: ${e.final}` : e.kind === 'link' ? `${e.i}. ${e.text}` : e.text;
       return t ? `<div class="line">${esc(t)}</div>` : '';

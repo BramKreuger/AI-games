@@ -56,7 +56,10 @@ export function createLiveServer({ port = 0, timeoutScale = 1, presenceSec = 15,
     if (kind === 'photo') return Promise.resolve({ id: 'bot', people: 3, flags: [] });
     if (kind === 'vote' || kind === 'blame') return Promise.resolve(1);
     if (kind === 'match') return Promise.resolve(Object.fromEntries((data?.items ?? []).map((it) => [it.no, data.options[Math.floor(Math.random() * data.options.length)]?.id])));
-    if (kind === 'prompt') return Promise.resolve('een vrolijk dier dat graag buiten is');
+    if (kind === 'prompt') {   // botprompt met het eigen onderwerp en een willekeurig detail (demo met weinig mensen)
+      const details = ['dat elke ochtend drie keer rond de tafel loopt', 'met een la vol zelfgemaakte jam', 'dat stiekem trompet speelt op het balkon', 'dat oude sleutels verzamelt', 'dat bij onweer pannenkoeken bakt', 'dat brieven schrijft aan zijn toekomstige zelf'];
+      return Promise.resolve(`${data?.theme ?? 'een dier'} ${details[Math.floor(Math.random() * details.length)]}`);
+    }
     return Promise.resolve(words[Math.floor(Math.random() * words.length)]);
   }
 

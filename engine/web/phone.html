@@ -32,7 +32,7 @@ video{width:100%;border-radius:8px;background:#000}.pts button{width:30%;margin:
       if (v.lang !== (document.documentElement.lang)) await ensureUI(v.lang);
       const sec = v.private ? (v.privateBig ? `<div class="big">${esc(v.private)}</div>` : `<div class="sec"><b>${ui.secret}</b><br>${esc(v.private)}</div>`) : '';
       const head = `<p class="mu">${esc(v.me.name)} · ${esc(v.me.teamId)}</p>`;
-      if (v.state === 'done') return render(`${head}<h2>${ui.done}</h2>${(v.totals).map((t) => `<p>${esc(t.teamId)}: ${t.points} ${ui.points}</p>`).join('')}`, 'done' + JSON.stringify(v.totals));
+      if (v.state === 'done') return render(`${head}<h2>${ui.done}</h2>${(v.totals).map((t) => `<p>${esc(t.teamId)}: ${pts(t.points)} ${ui.points}</p>`).join('')}`, 'done' + JSON.stringify(v.totals));
       if (!v.prompt) return render(`${head}${sec}<p>${v.state === 'lobby' ? ui.lobby : ui.wait}</p>`, 'wait' + v.state + (v.private ?? ''));
       const p = v.prompt, key = 'p' + p.id;
       if (p.kind === 'photo') {

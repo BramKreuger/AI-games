@@ -15,7 +15,7 @@ document.getElementById('c').onsubmit = async (e) => { e.preventDefault(); await
 async function tick() { const d = await api('/api/dashboard');
   st.textContent = `${d.state}${d.error ? ' — ' + d.error : ''}${d.valid === null ? '' : d.valid ? ' — export geldig' : ' — export ONGELDIG'}`;
   pl.innerHTML = '<tr><th>Naam</th><th>Team</th><th>Rol</th><th>Verbonden</th></tr>' + d.players.map((p) => `<tr><td>${esc(p.name)}</td><td>${esc(p.teamId)}</td><td>${p.optOut ? 'opt-out' : ''}</td><td class="${p.connected ? 'on' : 'off'}">${p.connected ? 'ja' : 'nee'}</td></tr>`).join('');
-  tot.innerHTML = d.totals.map((t) => `<tr><td>${esc(t.teamId)}</td><td>${t.points}</td></tr>`).join('');
+  tot.innerHTML = d.totals.map((t) => `<tr><td>${esc(t.teamId)}</td><td>${pts(t.points)}</td></tr>`).join('');
   en.innerHTML = d.entries.slice(-30).map((e) => `<tr><td>${e.id}</td><td>${esc(e.teamId)}</td><td>${e.points}</td><td>${esc(e.reason)}</td></tr>`).join(''); }
 setInterval(tick, 1500); tick();
 </script></body></html>

@@ -153,6 +153,7 @@ test('wie-is-wie: telefoon (iPhone) en groot scherm 1920x1080 met galerij', asyn
   const browser = await launch();
   try {
     const phone = await (await browser.newContext(devices['iPhone 13'])).newPage();
+    phone.setDefaultTimeout(2000);   // de telefoon rendert elke 800 ms opnieuw: geen 30 s wachten op een verdwenen knop
     await phone.goto(`${base}/phone`); await phone.fill('#n', 'Ann'); await phone.fill('#t', 'T1'); await phone.click('#j'); await phone.waitForSelector('text=Ann');
     const screen = await (await browser.newContext({ viewport: { width: 1920, height: 1080 } })).newPage();
     await screen.goto(`${base}/screen`);
@@ -180,5 +181,10 @@ test('wie-is-wie: telefoon (iPhone) en groot scherm 1920x1080 met galerij', asyn
     assert.ok(gallery.sizes.every((s) => s >= 32), `kleine tekst: ${gallery.sizes}`);
     const d = await (await fetch(`${base}/api/dashboard`)).json();
     assert.equal(d.state, 'done'); assert.equal(d.valid, true);
+    // Regressie (live run): punten met lange decimalen en eindscherm zonder uitslagregel.
+    await screen.waitForTimeout(1500);
+    const board = await screen.locator('#board p').allTextContents();
+    assert.ok(board.every((x) => /— -?\d+(\.\d{1,2})?$/.test(x)), `stand onleesbaar: ${board}`);
+    assert.ok(await screen.locator('text=Uitslag').isVisible(), 'uitslag niet zichtbaar op eindscherm');
   } finally { await browser.close(); await srv.close(); }
 });
